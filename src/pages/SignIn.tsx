@@ -14,7 +14,6 @@ import {
 } from "../components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { LoginCredentials, useAuth } from "../context/userProvider";
-import { toast, useToast } from "@/components/ui/use-toast";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -44,7 +43,6 @@ function SignIn() {
 
       // navigate("/");
     } catch (error) {
-      
       console.log("login error", error);
     }
   };
