@@ -1,5 +1,6 @@
 import { api } from "../lib/utils";
 
+
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +10,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+
   image?: string;
 }
 
