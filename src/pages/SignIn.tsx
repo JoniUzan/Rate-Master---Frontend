@@ -13,10 +13,11 @@ import {
   CardFooter,
 } from "../components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { LoginCredentials, useAuth } from "@/context/UserProvider";
+import { LoginCredentials, useAuth } from "../context/userProvider";
 
 
 function SignIn() {
+  const navigate = useNavigate();
   const { login } = useAuth();
   const [logInData, setLogInData] = useState<LoginCredentials>({
     username: "",
@@ -40,11 +41,11 @@ function SignIn() {
     );
     try {
       login(logInData);
+      navigate("/");
     } catch (error) {
       console.log("login error", error);
     }
   };
-  const navigate = useNavigate();
 
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -131,7 +132,7 @@ function SignIn() {
               className="text-sm text-muted-foreground"
             >
               Don't have an account?{" "}
-              <Button variant="ghost" onClick={() => navigate("/SignUp")}>
+              <Button variant="ghost" onClick={() => navigate("/auth/SignUp")}>
                 Sign up
               </Button>
             </motion.p>

@@ -1,5 +1,6 @@
 import { api } from "../lib/utils";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import { log } from "console";
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -37,13 +38,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>(
     undefined
   );
-  const [token, setToken] = useLocalStorage("jwt", null);
+  // const [token, setToken] = useLocalStorage("token");
+  const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!token) {
       setLoggedInUser(null);
+      console.log("User is not logged in")
       return;
     }
 
@@ -69,14 +72,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [token]);
 
   function logout() {
-    setToken(null);
+    localStorage.removeItem("token");
     setLoggedInUser(null);
   }
 
   async function login(userData: LoginCredentials) {
     try {
       const response = await api.post("/auth/login", userData);
-      setToken(response.data.token);
+      console.log(response.data.token);
+      localStorage.setItem("token",`${response.data.token}`);
       console.log("loged in successfully");
     } catch (error) {
       console.error("Error logging in:", error);
