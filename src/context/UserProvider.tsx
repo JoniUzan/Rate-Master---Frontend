@@ -10,6 +10,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  tasks: string[];
   image?: string;
 }
 
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>(
     undefined
   );
-  const [token, setToken] = useLocalStorage("jwt", null);
+  const [token, setToken] = useLocalStorage("jwt-taskify", null);
 
   const navigate = useNavigate();
 
@@ -107,5 +108,3 @@ export function useAuth() {
   }
   return context;
 }
-
-console.log("test");

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "../components/ui/button";
@@ -54,32 +55,87 @@ function SignUp() {
     }
   };
 
+=======
+// pages/SignUp.tsx
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "../components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { RegisterCredentials, useAuth } from "@/context/UserProvider";
+
+function SignUp() {
+  const { register } = useAuth();
+  const [registerData, serRegisterData] = useState<RegisterCredentials>({
+    username: "",
+    password: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+  });
+
+  function inputChangeHendler(e: React.ChangeEvent<HTMLInputElement>) {
+    serRegisterData((prev) => {
+      const { name, value } = e.target;
+      return { ...prev, [name]: value };
+    });
+  }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle sign up logic here
+    console.log(
+      "Sign up attempted with:",
+      registerData.username,
+      registerData.password,
+      registerData.email,
+      registerData.firstName,
+      registerData.lastName
+    );
+    try {
+      register(registerData);
+      
+    } catch (error) {
+      console.error("error while register", error);
+    }
+  };
+
+  const navigate = useNavigate();
+>>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
-        type: 'spring',
+      transition: {
+        type: "spring",
         damping: 20,
         stiffness: 100,
         when: "beforeChildren",
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
-      transition: { 
-        type: 'spring',
+      transition: {
+        type: "spring",
         damping: 25,
-        stiffness: 120
-      }
-    }
+        stiffness: 120,
+      },
+    },
   };
 
   return (
@@ -91,12 +147,17 @@ function SignUp() {
       >
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">Create Your RateMaster Account</CardTitle>
-            <CardDescription className="text-center">Join our community of reviewers today</CardDescription>
+            <CardTitle className="text-2xl font-bold text-center">
+              Create Your RateMaster Account
+            </CardTitle>
+            <CardDescription className="text-center">
+              Join our community of reviewers today
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <motion.div variants={itemVariants}>
+<<<<<<< HEAD
                 <Label htmlFor="firstName">First Name</Label>
                 <Input 
                   id="firstName" 
@@ -104,11 +165,22 @@ function SignUp() {
                   placeholder="Enter your first name"
                   value={firstName}
                   onChange={handleChange}
+=======
+                <Label htmlFor="name">First Name</Label>
+                <Input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  placeholder="Enter your First name"
+                  value={registerData.firstName}
+                  onChange={inputChangeHendler}
+>>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
               <motion.div variants={itemVariants}>
                 <Label htmlFor="lastName">Last Name</Label>
+<<<<<<< HEAD
                 <Input 
                   id="lastName" 
                   type="text" 
@@ -126,48 +198,83 @@ function SignUp() {
                   placeholder="Enter your username"
                   value={username}
                   onChange={handleChange}
+=======
+                <Input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  placeholder="Enter your Last name"
+                  value={registerData.lastName}
+                  onChange={inputChangeHendler}
+>>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
               <motion.div variants={itemVariants}>
                 <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
                   placeholder="Enter your email"
+<<<<<<< HEAD
                   value={email}
                   onChange={handleChange}
+=======
+                  value={registerData.email}
+                  onChange={inputChangeHendler}
+                  required
+                />
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  name="username"
+                  type="username"
+                  placeholder="Enter your Username"
+                  value={registerData.username}
+                  onChange={inputChangeHendler}
+>>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
               <motion.div variants={itemVariants}>
                 <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password" 
-                  type="password" 
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
                   placeholder="Create a password"
+<<<<<<< HEAD
                   value={password}
                   onChange={handleChange}
+=======
+                  value={registerData.password}
+                  onChange={inputChangeHendler}
+>>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
-              <motion.div variants={itemVariants}>
+              {/* <motion.div variants={itemVariants}>
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input 
-                  id="confirmPassword" 
-                  type="password" 
+                <Input
+                  id="confirmPassword"
+                  type="password"
                   placeholder="Confirm your password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={inputChangeHendler}
                   required
                 />
-              </motion.div>
-              <motion.div 
+              </motion.div> */}
+              <motion.div
                 variants={itemVariants}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button type="submit" className="w-full">Sign Up</Button>
+                <Button type="submit" className="w-full">
+                  Sign Up
+                </Button>
               </motion.div>
             </form>
           </CardContent>
@@ -176,7 +283,11 @@ function SignUp() {
               variants={itemVariants}
               className="text-sm text-muted-foreground"
             >
+<<<<<<< HEAD
               Already have an account? <Button variant="ghost" onClick={() => navigate("/auth/SignIn")}>Sign in</Button>
+=======
+              Already have an account? <Button variant="ghost">Sign in</Button>
+>>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
             </motion.p>
           </CardFooter>
         </Card>
