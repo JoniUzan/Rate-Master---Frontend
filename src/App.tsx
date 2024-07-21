@@ -22,7 +22,7 @@ function App() {
     }
 
     if (loggedInUser !== null) {
-      return <Navigate to="/task" replace />;
+      return <Navigate to="/Business" replace />;
     }
 
     return children;
@@ -31,20 +31,26 @@ function App() {
   return (
     <>
       <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route  path="/about" element={<About />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
-          <Route path="/TermsOfService" element={<TermsOfService />} />\
-          <Route  path="/Business" element={<Business />} >
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/TermsOfService" element={<TermsOfService />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/Business" element={<Business />}>
             {/* <Route path="/:id" element={<BusinessDetail />} />   */}
           </Route>
-          
-        <Route path="*" element={<NotFound />} />
-      </Route>
+          <Route path="*" element={<NotFound />} />
+        </Route>
 
-        <Route path="auth" element={<AuthLayout />}>
+        <Route
+          path="auth"
+          element={
+            <RequireUnAuth>
+              <AuthLayout />
+            </RequireUnAuth>
+          }
+        >
           <Route index element={<Home />} />
           <Route path="SignIn" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
