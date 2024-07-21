@@ -74,7 +74,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   function logout() {
     localStorage.removeItem("token");
     setLoggedInUser(null);
-    navigate("/auth/SignIn");
   }
 
   async function login(userData: LoginCredentials) {
@@ -103,7 +102,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
       console.log("registered successfully");
-      navigate("/SignIn");
+      navigate("/auth/SignIn");
     } catch (error) {
       toast({
         description: "Error signing up",

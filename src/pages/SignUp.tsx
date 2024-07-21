@@ -47,7 +47,7 @@ function SignUp() {
     try {
       register(registerData);
 
-      navigate("/auth/SignIn");
+      
     } catch (error) {
       console.error("error while register", error);
     }
