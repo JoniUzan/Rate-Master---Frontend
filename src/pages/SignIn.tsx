@@ -94,7 +94,7 @@ function SignIn() {
               variants={itemVariants}
               className="text-sm text-muted-foreground"
             >
-              Don't have an account? <Button variant="ghost" onClick={()=>navigate("/SignUp")}>Sign up</Button>
+              Don't have an account? <Button variant="ghost" onClick={()=>navigate("/auth/SignUp")}>Sign up</Button>
             </motion.p>
           </CardFooter>
         </Card>

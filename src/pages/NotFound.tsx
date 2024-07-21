@@ -2,13 +2,12 @@
 import { motion } from 'framer-motion';
 import { Button } from "../components/ui/button";
 
-
 function NotFound() {
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
+    visible: { 
       opacity: 1,
-      transition: {
+      transition: { 
         when: "beforeChildren",
         staggerChildren: 0.2
       }
@@ -17,10 +16,10 @@ function NotFound() {
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
+    visible: { 
+      y: 0, 
       opacity: 1,
-      transition: {
+      transition: { 
         type: 'spring',
         damping: 12,
         stiffness: 100
@@ -39,19 +38,19 @@ function NotFound() {
         <motion.div variants={itemVariants} className="mb-8">
           <svg width="200" height="200" viewBox="0 0 200 200" className="mx-auto">
             {/* Construction site animation */}
-            <motion.rect
+            <motion.rect 
               x="20" y="150" width="160" height="30" fill="#FFD700"
               initial={{ scaleY: 0 }}
               animate={{ scaleY: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             />
-            <motion.polygon
+            <motion.polygon 
               points="100,20 180,150 20,150" fill="#FF6347"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', damping: 10, stiffness: 100, delay: 1 }}
             />
-            <motion.circle
+            <motion.circle 
               cx="100" cy="100" r="20" fill="#4169E1"
               initial={{ scale: 0 }}
               animate={{ scale: 1, y: [0, -20, 0] }}
