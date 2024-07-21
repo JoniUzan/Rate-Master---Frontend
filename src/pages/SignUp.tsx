@@ -1,61 +1,3 @@
-<<<<<<< HEAD
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../components/ui/card";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { RegisterCredentials, useAuth } from '@/context/userProvider';
-
-function SignUp() {
-  const { register } = useAuth();
-  const navigate = useNavigate();
-
-  const [registerData, setRegisterData] = useState<RegisterCredentials>({
-    username: '',
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: ''
-  });
-
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  const { username, email, password, firstName, lastName } = registerData;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRegisterData({
-      ...registerData,
-      [e.target.id]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (username.trim() === '' || email.trim() === '' || password.trim() === '' || confirmPassword.trim() === '') {
-      alert('All fields are required.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
-
-    try {
-      await axios.post("http://localhost:3000/api/auth/register", { username, email, password, firstName, lastName });
-      console.log('Sign up successful with:', username, email, password);
-      navigate('/');
-    } catch (error) {
-      console.error('Error during sign up:', error);
-      alert('Sign up failed. Please try again.');
-    }
-  };
-
-=======
 // pages/SignUp.tsx
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -70,8 +12,9 @@ import {
   CardContent,
   CardFooter,
 } from "../components/ui/card";
+import { RegisterCredentials, useAuth } from "../context/userProvider";
 import { useNavigate } from "react-router-dom";
-import { RegisterCredentials, useAuth } from "@/context/UserProvider";
+
 
 function SignUp() {
   const { register } = useAuth();
@@ -82,7 +25,7 @@ function SignUp() {
     firstName: "",
     lastName: "",
   });
-
+  const navigate = useNavigate();
   function inputChangeHendler(e: React.ChangeEvent<HTMLInputElement>) {
     serRegisterData((prev) => {
       const { name, value } = e.target;
@@ -102,14 +45,12 @@ function SignUp() {
     );
     try {
       register(registerData);
-      
+      navigate("/auth/SignIn")
     } catch (error) {
       console.error("error while register", error);
     }
   };
 
-  const navigate = useNavigate();
->>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -157,15 +98,6 @@ function SignUp() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <motion.div variants={itemVariants}>
-<<<<<<< HEAD
-                <Label htmlFor="firstName">First Name</Label>
-                <Input 
-                  id="firstName" 
-                  type="text" 
-                  placeholder="Enter your first name"
-                  value={firstName}
-                  onChange={handleChange}
-=======
                 <Label htmlFor="name">First Name</Label>
                 <Input
                   id="firstName"
@@ -174,31 +106,11 @@ function SignUp() {
                   placeholder="Enter your First name"
                   value={registerData.firstName}
                   onChange={inputChangeHendler}
->>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
               <motion.div variants={itemVariants}>
                 <Label htmlFor="lastName">Last Name</Label>
-<<<<<<< HEAD
-                <Input 
-                  id="lastName" 
-                  type="text" 
-                  placeholder="Enter your last name"
-                  value={lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </motion.div>
-              <motion.div variants={itemVariants}>
-                <Label htmlFor="username">Username</Label>
-                <Input 
-                  id="username" 
-                  type="text" 
-                  placeholder="Enter your username"
-                  value={username}
-                  onChange={handleChange}
-=======
                 <Input
                   id="lastName"
                   name="lastName"
@@ -206,7 +118,6 @@ function SignUp() {
                   placeholder="Enter your Last name"
                   value={registerData.lastName}
                   onChange={inputChangeHendler}
->>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
@@ -217,10 +128,6 @@ function SignUp() {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-<<<<<<< HEAD
-                  value={email}
-                  onChange={handleChange}
-=======
                   value={registerData.email}
                   onChange={inputChangeHendler}
                   required
@@ -235,7 +142,6 @@ function SignUp() {
                   placeholder="Enter your Username"
                   value={registerData.username}
                   onChange={inputChangeHendler}
->>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
@@ -246,13 +152,8 @@ function SignUp() {
                   name="password"
                   type="password"
                   placeholder="Create a password"
-<<<<<<< HEAD
-                  value={password}
-                  onChange={handleChange}
-=======
                   value={registerData.password}
                   onChange={inputChangeHendler}
->>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
                   required
                 />
               </motion.div>
@@ -283,11 +184,7 @@ function SignUp() {
               variants={itemVariants}
               className="text-sm text-muted-foreground"
             >
-<<<<<<< HEAD
-              Already have an account? <Button variant="ghost" onClick={() => navigate("/auth/SignIn")}>Sign in</Button>
-=======
-              Already have an account? <Button variant="ghost">Sign in</Button>
->>>>>>> 66583859e0e9f6d903f0074891effec718d97f41
+              Already have an account? <Button onClick={()=>navigate("/auth/SignIn")} variant="ghost">Sign in</Button>
             </motion.p>
           </CardFooter>
         </Card>
