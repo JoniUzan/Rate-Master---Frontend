@@ -1,6 +1,4 @@
 import { api } from "../lib/utils";
-import { useLocalStorage } from "@uidotdev/usehooks";
-import { log } from "console";
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -80,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const response = await api.post("/auth/login", userData);
       console.log(response.data.token);
-      localStorage.setItem("token",`${response.data.token}`);
+      localStorage.setItem("token", `${response.data.token}`);
       console.log("loged in successfully");
     } catch (error) {
       console.error("Error logging in:", error);
