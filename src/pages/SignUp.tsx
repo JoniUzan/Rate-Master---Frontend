@@ -14,7 +14,7 @@ import {
 } from "../components/ui/card";
 import { RegisterCredentials, useAuth } from "../context/userProvider";
 import { useNavigate } from "react-router-dom";
-import { toast, useToast } from "@/components/ui/use-toast";
+
 
 function SignUp() {
   const { register } = useAuth();
@@ -47,9 +47,8 @@ function SignUp() {
     try {
       register(registerData);
 
-      navigate("/auth/SignIn");
-    } catch (error) {
       
+    } catch (error) {
       console.error("error while register", error);
     }
   };
