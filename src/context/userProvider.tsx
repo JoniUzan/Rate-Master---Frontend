@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 export interface User {
   username: string;
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
+  tasks: string[];
   image?: string;
 }
 
@@ -18,7 +18,10 @@ export interface LoginCredentials {
   username: string;
   password: string;
 }
-export interface RegisterCredentials extends User {
+export interface RegisterCredentials {
+  username: string;
+  password: string;
+  email: string;
 }
 
 export interface AuthContextType {
@@ -45,8 +48,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     async function fetchUser() {
       try {
-        const response = await api.get("/loggedInUser");
+        const response = await api.get("/auth/loggedInUser");
         setLoggedInUser(response.data);
+        console.log(response.data);
       } catch (error: any) {
         if (error.response?.status === 401) {
           console.error("Invalid token, logging out");
