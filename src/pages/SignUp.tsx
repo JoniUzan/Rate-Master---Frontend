@@ -14,10 +14,11 @@ import {
 } from "../components/ui/card";
 import { RegisterCredentials, useAuth } from "../context/userProvider";
 import { useNavigate } from "react-router-dom";
-
+import { toast, useToast } from "@/components/ui/use-toast";
 
 function SignUp() {
   const { register } = useAuth();
+
   const [registerData, serRegisterData] = useState<RegisterCredentials>({
     username: "",
     password: "",
@@ -45,8 +46,10 @@ function SignUp() {
     );
     try {
       register(registerData);
-      navigate("/auth/SignIn")
+
+      navigate("/auth/SignIn");
     } catch (error) {
+      
       console.error("error while register", error);
     }
   };
@@ -184,7 +187,10 @@ function SignUp() {
               variants={itemVariants}
               className="text-sm text-muted-foreground"
             >
-              Already have an account? <Button onClick={() => navigate("/auth/SignIn")} variant="ghost">Sign in</Button>
+              Already have an account?{" "}
+              <Button onClick={() => navigate("/auth/SignIn")} variant="ghost">
+                Sign in
+              </Button>
             </motion.p>
           </CardFooter>
         </Card>
