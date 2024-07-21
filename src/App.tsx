@@ -21,7 +21,10 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />\
-        <Route path="/Business" element={<Business/>} />
+          <Route  path="/Business" element={<Business />} >
+            {/* <Route path="/:id" element={<BusinessDetail />} />   */}
+          </Route>
+          
         <Route path="*" element={<NotFound />} />
       </Route>
 

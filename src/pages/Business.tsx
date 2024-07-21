@@ -31,7 +31,7 @@ function Business() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
+    <div className=' flex flex-wrap gap-9'>
       {businesses.map((business:Business) => (
         <Card key={business.id}>
           <div>{business.name}</div>
