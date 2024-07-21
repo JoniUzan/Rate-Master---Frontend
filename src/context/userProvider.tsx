@@ -107,3 +107,5 @@ export function useAuth() {
   }
   return context;
 }
+
+console.log("test");
