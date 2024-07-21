@@ -10,6 +10,7 @@ function Header() {
             <Button variant="ghost" asChild><a href="/">Home</a></Button>
             <Button variant="ghost" asChild><a href="/about">About</a></Button>
             <Button variant="ghost" asChild><a href="/contact">Contact</a></Button>
+            <Button variant="ghost" asChild><a href="/Business">Business</a></Button>
             
       <div className=' '>
             <ModeToggle />
