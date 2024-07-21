@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { LoginCredentials, useAuth } from "@/context/UserProvider";
 
+
 function SignIn() {
   const { login } = useAuth();
   const [logInData, setLogInData] = useState<LoginCredentials>({

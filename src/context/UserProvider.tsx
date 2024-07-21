@@ -22,6 +22,8 @@ export interface RegisterCredentials {
   username: string;
   password: string;
   email: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface AuthContextType {
@@ -86,7 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await api.post("/auth/register", userData);
       console.log("registered successfully");
-      navigate("/auth/login");
+      navigate("/SignIn");
     } catch (error) {
       console.error("Error registering:", error);
     }
