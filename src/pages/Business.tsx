@@ -6,14 +6,19 @@ function Business() {
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  interface Business{
+    id: any;
+    name: String;
+    description: String;
+    
+}
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const response = await api.get('/api/business');
+        const response = await api.get('/business');
         setBusinesses(response.data);
       } catch (err) {
-        setError(err:E);
+        setError(err);
       } finally {
         setLoading(false);
       }
@@ -23,11 +28,11 @@ function Business() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
-      {businesses.map((business) => (
+      {businesses.map((business:Business) => (
         <Card key={business.id}>
           <div>{business.name}</div>
           <div>{business.description}</div>
