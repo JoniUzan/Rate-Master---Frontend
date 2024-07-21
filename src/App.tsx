@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Header from "./components/self-made/Header";
@@ -11,30 +11,44 @@ import NotFound from "./pages/NotFound";
 import ContactUs from "./pages/Contact";
 import AuthLayout from "./components/self-made/AuthLayout";
 import MainLayout from "./components/self-made/MainLayout";
+import { useAuth } from "./context/userProvider";
 
 function App() {
+  // home, login ,register
+  function RequireUnAuth({ children }: { children: React.ReactNode }) {
+    const { loggedInUser } = useAuth();
+
+    if (loggedInUser === undefined) {
+      return null;
+    }
+
+    if (loggedInUser !== null) {
+      return <Navigate to="/task" replace />;
+    }
+
+    return children;
+  }
+
   return (
     <>
       <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route  path="/about" element={<About />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
-        <Route path="/TermsOfService" element={<TermsOfService />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/TermsOfService" element={<TermsOfService />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
 
         <Route path="auth" element={<AuthLayout />}>
           <Route index element={<Home />} />
           <Route path="SignIn" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
         </Route>
-
       </Routes>
-      
     </>
-  )
+  );
 }
 
-export default App
+export default App;
