@@ -1,4 +1,3 @@
-// pages/SignUp.tsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "../components/ui/button";
@@ -6,19 +5,55 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../components/ui/card";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { RegisterCredentials, useAuth } from '@/context/userProvider';
 
 function SignUp() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { register } = useAuth();
+  const navigate = useNavigate();
+
+  const [registerData, setRegisterData] = useState<RegisterCredentials>({
+    username: '',
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: ''
+  });
+
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle sign up logic here
-    console.log('Sign up attempted with:', name, email, password);
+  const { username, email, password, firstName, lastName } = registerData;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterData({
+      ...registerData,
+      [e.target.id]: e.target.value,
+    });
   };
-    const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (username.trim() === '' || email.trim() === '' || password.trim() === '' || confirmPassword.trim() === '') {
+      alert('All fields are required.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:3000/api/auth/register", { username, email, password, firstName, lastName });
+      console.log('Sign up successful with:', username, email, password);
+      navigate('/');
+    } catch (error) {
+      console.error('Error during sign up:', error);
+      alert('Sign up failed. Please try again.');
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { 
@@ -62,13 +97,35 @@ function SignUp() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <motion.div variants={itemVariants}>
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="firstName">First Name</Label>
                 <Input 
-                  id="name" 
+                  id="firstName" 
                   type="text" 
-                  placeholder="Enter your full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your first name"
+                  value={firstName}
+                  onChange={handleChange}
+                  required
+                />
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input 
+                  id="lastName" 
+                  type="text" 
+                  placeholder="Enter your last name"
+                  value={lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <Label htmlFor="username">Username</Label>
+                <Input 
+                  id="username" 
+                  type="text" 
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={handleChange}
                   required
                 />
               </motion.div>
@@ -79,7 +136,7 @@ function SignUp() {
                   type="email" 
                   placeholder="Enter your email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChange}
                   required
                 />
               </motion.div>
@@ -90,7 +147,7 @@ function SignUp() {
                   type="password" 
                   placeholder="Create a password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handleChange}
                   required
                 />
               </motion.div>
@@ -119,7 +176,7 @@ function SignUp() {
               variants={itemVariants}
               className="text-sm text-muted-foreground"
             >
-              Already have an account? <Button variant="ghost" onClick={()=>navigate("/SignIn")}>Sign in</Button>
+              Already have an account? <Button variant="ghost" onClick={() => navigate("/auth/SignIn")}>Sign in</Button>
             </motion.p>
           </CardFooter>
         </Card>
