@@ -12,9 +12,8 @@ import {
   CardContent,
   CardFooter,
 } from "../components/ui/card";
-import { RegisterCredentials, useAuth } from "../context/userProvider";
+import { RegisterCredentials, useAuth } from "../context/UserProvider";
 import { useNavigate } from "react-router-dom";
-
 
 function SignUp() {
   const { register } = useAuth();
@@ -46,8 +45,6 @@ function SignUp() {
     );
     try {
       register(registerData);
-
-      
     } catch (error) {
       console.error("error while register", error);
     }
