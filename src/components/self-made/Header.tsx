@@ -14,12 +14,12 @@ import {
 function Header() {
   const { loggedInUser, logout } = useAuth();
   return (
-    <header className="py-2 bg-primary text-primary-foreground sticky top-0 z-50 shadow-md">
+    <header className="py-2 bg-muted text-secondary-foreground sticky top-0 z-50 shadow-md">
       <nav className="flex justify-between px-8">
         <div className="flex gap-6">
           <img
             className=" w-32"
-            src="src\assets\RateMaster_Transparent_Logo_Corrected.png"
+            src="src\assets\Logo.png"
           />
           <Button variant="ghost" asChild>
             <a href="/">Home</a>

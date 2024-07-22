@@ -35,6 +35,7 @@ function HomeCarusele() {
   }, []);
 
   return (
+
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">
@@ -67,6 +68,7 @@ function HomeCarusele() {
       </div>
     </section>
   );
+
 }
 
 export default HomeCarusele;

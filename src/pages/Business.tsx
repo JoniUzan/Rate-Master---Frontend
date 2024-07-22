@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/utils";
 import { motion } from "framer-motion";
 import PaginationComponent from '../components/self-made/PaganationSelf';
+import {BusinessSkeletonPage} from '@/components/self-made/SelfSkeleton';
 
 function Business() {
+
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   interface Business {
     _id: string;
@@ -47,7 +50,8 @@ function Business() {
     fetchBusinesses();
   }, [searchParams]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <BusinessSkeletonPage/>
+;
 
   const handleSearch = (e: any) => {
     const search = e.target.value;
@@ -59,7 +63,7 @@ function Business() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 bg-background">
       <div className="mb-8">
         <Input
           type="text"
@@ -84,15 +88,15 @@ function Business() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Card onClick={() => { navigate(`/business/${business._id}`) }} className=" bg-secondary-foreground overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <img
                   src={business.image}
                   alt={business.name}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-2 text-gray-800">{business.name}</h2>
-                  <p className="text-gray-600 mb-4">{business.description}</p>
+                  <h2 className="text-2xl font-bold mb-2 text-background">{business.name}</h2>
+                  <p className="text-background mb-4">{business.description}</p>
                   <div className="flex justify-between items-center">
                     <p className="text-sm text-gray-500">{business.location}</p>
                     <div className="flex items-center">
@@ -114,7 +118,7 @@ function Business() {
           ))}
         </motion.div>
       ) : (
-        <div className="text-center text-gray-600">No businesses found.</div>
+        <div className="text-center text-background">No businesses found.</div>
       )}
 
       <PaginationComponent
