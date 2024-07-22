@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "@/lib/utils";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -43,12 +43,15 @@ interface Business {
 }
 
 const BusinessDetailsPage: React.FC = () => {
+
   const { loggedInUser, userLikes, setUserLikes } = useAuth();
 
   const [business, setBusiness] = useState<Business | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [newReview, setNewReview] = useState<string>("");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [loadingLike, setLoadingLike] = useState<string | null>(null);
+
   const { businessId } = useParams<{ businessId: string }>();
   const navigate = useNavigate();
 
@@ -78,29 +81,57 @@ const BusinessDetailsPage: React.FC = () => {
   }
 
   async function handleLikeReview(reviewId: string) {
+
+    const currentLikes = userLikes || [];
+    const isLiked = currentLikes.includes(reviewId);
+
+    const updatedLikes = business?.reviews.map(review =>
+      review._id === reviewId
+        ? { ...review, likes: review.likes + (isLiked ? -1 : 1) }
+        : review
+    );
+
+    setBusiness((prev: any) => ({
+      ...prev,
+      reviews: updatedLikes || []
+    }));
+
+    setUserLikes((prev: any) => isLiked
+      ? (prev || []).filter((rId: any) => rId !== reviewId)
+      : [...(prev || []), reviewId]
+    );
+
+    setLoadingLike(reviewId);
+
     try {
       const { data: updatedReview } = await api.patch(
         `business/reviews/like/${reviewId}`
       );
       console.log(updatedReview);
       if (!business) return;
-      setBusiness((prev: any) => {
-        return {
-          ...prev,
-          reviews: prev?.reviews.map((r: any) =>
-            r._id === reviewId ? updatedReview : r
-          ),
-        };
-      });
-      setUserLikes((prev) => {
-        if (prev.includes(reviewId)) {
-          return prev.filter((rId) => reviewId !== rId);
-        } else {
-          return [...prev, reviewId];
-        }
-      });
+      setBusiness((prev: any) => ({
+        ...prev,
+        reviews: prev?.reviews.map((r: any) =>
+          r._id === reviewId ? updatedReview : r
+        )
+      }));
     } catch (error) {
       console.error("Failed to like review:", error);
+
+      setBusiness((prev: any) => ({
+        ...prev,
+        reviews: prev?.reviews.map((r: any) =>
+          r._id === reviewId
+            ? { ...r, likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1) }
+            : r
+        )
+      }));
+      setUserLikes(prev => isLiked
+        ? [...(prev || []), reviewId]
+        : (prev || []).filter(rId => rId !== reviewId)
+      );
+    } finally {
+      setLoadingLike(null);
     }
   }
 
@@ -146,6 +177,7 @@ const BusinessDetailsPage: React.FC = () => {
             <Star size={16} className="text-yellow-400 mr-1" />
             <span>{business.stars.toFixed(1)} stars</span>
           </div>
+          <div>asd</div>
         </CardContent>
         <CardFooter>
           <div className="w-full">
@@ -189,18 +221,19 @@ const BusinessDetailsPage: React.FC = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleLikeReview(review._id)}
+                        disabled={loadingLike === review._id}
                         className="mr-2"
                       >
                         {userLikes?.includes(review._id) ? (
-                          <Fragment>
+                          <div className="flex flex-row items-center">
                             <HeartOff className="mr-1" size={16} />
                             <span>{review.likes}</span>
-                          </Fragment>
+                          </div>
                         ) : (
-                          <Fragment>
-                            <Heart className="mr-1" size={16} />
+                          <div className="flex flex-row items-center">
+                            <Heart className="mr-1 text-red-600" size={16} />
                             <span>{review.likes}</span>
-                          </Fragment>
+                          </div>
                         )}
                       </Button>
                     </div>
