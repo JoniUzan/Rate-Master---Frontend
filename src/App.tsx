@@ -11,6 +11,7 @@ import AuthLayout from "./components/self-made/AuthLayout";
 import MainLayout from "./components/self-made/MainLayout";
 import { useAuth } from "./context/userProvider";
 import Business from "./pages/Business";
+import BusinessDetailsPage from "./pages/BusinessDetailsPage";
 
 function App() {
   // home, login ,register
@@ -37,9 +38,11 @@ function App() {
           <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactUs />} />
-          <Route path="/Business" element={<Business />}>
-            {/* <Route path="/:id" element={<BusinessDetail />} />   */}
-          </Route>
+
+          <Route path="/Business" element={<Business />} />
+          <Route path="/Business/:businessId" element={<BusinessDetailsPage />} />
+
+
           <Route path="*" element={<NotFound />} />
         </Route>
 
