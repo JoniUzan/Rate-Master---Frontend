@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import { api } from "../lib/utils";
 
 import React, { createContext, useState, useEffect, useContext } from "react";
@@ -81,7 +82,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log(response.data.token);
       localStorage.setItem("token", `${response.data.token}`);
       console.log("loged in successfully");
+      navigate("/");
     } catch (error) {
+      toast({
+        description: "Error logged in",
+        variant: "destructive",
+      });
       console.error("Error logging in:", error);
     }
   }
@@ -89,9 +95,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   async function register(userData: RegisterCredentials) {
     try {
       await api.post("/auth/register", userData);
+      toast({
+        description: "Signed up successfully",
+        style: {
+          backgroundColor: "lightgreen",
+        },
+      });
       console.log("registered successfully");
-      navigate("/SignIn");
+      navigate("/auth/SignIn");
     } catch (error) {
+      toast({
+        description: "Error signing up",
+        variant: "destructive",
+      });
       console.error("Error registering:", error);
     }
   }
