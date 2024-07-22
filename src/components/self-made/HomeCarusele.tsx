@@ -11,7 +11,7 @@ function HomeCarusele() {
   return (
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Featured Products</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center text-secondary-foreground">Featured Products</h2>
             <Carousel className="w-full max-w-4xl mx-auto">
               <CarouselContent>
                 {carouselItems.map((item, index) => (

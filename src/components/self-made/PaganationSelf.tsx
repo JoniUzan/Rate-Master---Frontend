@@ -15,12 +15,12 @@ interface PaginationProps {
 
 function PaginationComponent({ currentPage, totalPages, onPageChange }: PaginationProps) {
   return (
-    <Pagination className="mt-8">
+    <Pagination className="text-card-foreground mt-8">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious 
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+            className={currentPage === 1 ? "pointer-events-none opacity-50 text-card-foreground" : ""}
           />
         </PaginationItem>
         {[...Array(totalPages)].map((_, index) => (
@@ -36,7 +36,7 @@ function PaginationComponent({ currentPage, totalPages, onPageChange }: Paginati
         <PaginationItem>
           <PaginationNext
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-            className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+            className={currentPage === totalPages ? "pointer-events-none opacity-50 text-card-foreground" : ""}
           />
         </PaginationItem>
       </PaginationContent>
