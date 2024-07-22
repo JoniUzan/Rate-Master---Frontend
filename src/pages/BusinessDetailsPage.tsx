@@ -20,6 +20,7 @@ import {
 import { Star, ArrowLeft, MapPin, Heart, HeartOff } from "lucide-react";
 import { useAuth } from "../context/UserProvider";
 import { BusinessDetailsSkeleton } from "@/components/self-made/SelfSkeleton";
+import GoogleMaps from "@/components/self-made/GoogleMap";
 
 interface Review {
   _id: string;
@@ -40,6 +41,7 @@ interface Business {
   stars: number;
   location: string;
   reviews: Review[];
+  coordinates: { lat: number; lng: number };
 }
 
 const BusinessDetailsPage: React.FC = () => {
@@ -136,15 +138,27 @@ const BusinessDetailsPage: React.FC = () => {
           <img
             src={business.image}
             alt={business.name}
-            className="w-full h-48 pb-3 object-cover"
+            className="w-full h-96 pb-3 object-cover"
           />
-          <CardTitle className="text-2xl font-bold">{business.name}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-600 mb-4">{business.description}</p>
-          <div className="flex items-center mb-4">
-            <Star size={16} className="text-yellow-400 mr-1" />
-            <span>{business.stars.toFixed(1)} stars</span>
+          <div className="flex justify-between">
+            <div>
+              <CardTitle className="text-2xl font-bold">
+                {business.name}
+              </CardTitle>
+              <p className="text-gray-600 mb-4">{business.description}</p>
+              <div className="flex items-center mb-4">
+                <Star size={16} className="text-yellow-400 mr-1" />
+                <span>{business.stars.toFixed(1)} stars</span>
+              </div>
+            </div>
+            <div className="w-80 h-36 rounded-lg overflow-hidden">
+              <GoogleMaps
+                location={business.location}
+                position={business.coordinates}
+              />
+            </div>
           </div>
         </CardContent>
         <CardFooter>
