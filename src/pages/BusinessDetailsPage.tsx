@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Star, ArrowLeft, MapPin, Heart, HeartOff } from 'lucide-react';
 import { useAuth } from "../context/userProvider";
+import { BusinessDetailsSkeleton } from '@/components/self-made/SelfSkeleton';
 
 interface Review {
     _id: string;
@@ -108,7 +109,7 @@ const BusinessDetailsPage: React.FC = () => {
         }
     };
 
-    if (loading) return <div className="text-center py-4">Loading...</div>;
+    if (loading) return <BusinessDetailsSkeleton/>;
     if (!business) return <div className="text-center py-4">No business found</div>;
 
     return (

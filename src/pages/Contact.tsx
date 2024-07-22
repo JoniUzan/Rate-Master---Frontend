@@ -1,4 +1,3 @@
-// pages/ContactUs.tsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "../components/ui/button";
@@ -6,15 +5,37 @@ import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Label } from "../components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../components/ui/card";
+import emailjs from "@emailjs/browser";
+import { toast } from '@/components/ui/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 function ContactUs() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-
+  const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle contact form submission logic here
+    const form = e.target as HTMLFormElement;
+    emailjs.sendForm('service_6fokoqi', 'template_stqu7h3', form, 'K6UnYIQvr_mNfteek')
+      .then((result) => {
+        console.log('Email sent successfully:', result.text);
+        // You might want to clear the form or show a success message here
+          toast({
+        description: "Form sent successfully",
+            variant: "success",
+            style: { "background":"green","color":"white", }
+          });
+        setTimeout(() => { navigate("/") },1200)
+      }, (error) => {
+        console.error('Failed to send email:', error.text);
+        // You might want to show an error message to the user here
+          toast({
+        description: "Error while submitting the form",
+            variant: "destructive",
+        
+      });
+      });
     console.log('Contact form submitted with:', name, email, message);
   };
 
@@ -64,6 +85,7 @@ function ContactUs() {
                 <Label htmlFor="name">Name</Label>
                 <Input 
                   id="name" 
+                  name="name"
                   type="text" 
                   placeholder="Enter your name"
                   value={name}
@@ -75,6 +97,7 @@ function ContactUs() {
                 <Label htmlFor="email">Email</Label>
                 <Input 
                   id="email" 
+                  name="email"
                   type="email" 
                   placeholder="Enter your email"
                   value={email}
@@ -86,6 +109,7 @@ function ContactUs() {
                 <Label htmlFor="message">Message</Label>
                 <Textarea 
                   id="message" 
+                  name="message"
                   placeholder="Enter your message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
