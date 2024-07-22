@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { api } from '@/lib/utils';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Star, ArrowLeft, ThumbsUp } from 'lucide-react';
+import { Star, ArrowLeft, MapPin, Heart, HeartOff } from 'lucide-react';
 import { useAuth } from "../context/userProvider";
 
 interface Review {
@@ -20,16 +20,18 @@ interface Review {
 }
 
 interface Business {
+    image: string;
     _id: string;
     name: string;
     description: string;
     stars: number;
+    location: string;
     reviews: Review[];
 }
 
 const BusinessDetailsPage: React.FC = () => {
 
-    const { loggedInUser } = useAuth();
+    const { loggedInUser, userLikes, setUserLikes } = useAuth();
 
     const [business, setBusiness] = useState<Business | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -38,8 +40,11 @@ const BusinessDetailsPage: React.FC = () => {
     const { businessId } = useParams<{ businessId: string }>();
     const navigate = useNavigate();
 
+
     useEffect(() => {
+
         fetchBusinessData();
+
     }, [businessId]);
 
     const fetchBusinessData = async () => {
@@ -47,6 +52,7 @@ const BusinessDetailsPage: React.FC = () => {
             setLoading(true);
             const res = await api.get<Business>(`/business/${businessId}`);
             const reviewsResponse = await api.get<Review[]>(`/business/reviews/${businessId}`);
+
             const businessWithReview = { ...res.data, reviews: reviewsResponse.data };
             setBusiness(businessWithReview);
         } catch (error) {
@@ -62,8 +68,23 @@ const BusinessDetailsPage: React.FC = () => {
 
     async function handleLikeReview(reviewId: string) {
         try {
-            await api.patch(`business/reviews/like/${reviewId}`);
-            fetchBusinessData();
+            const { data: updatedReview } = await api.patch(`business/reviews/like/${reviewId}`);
+            console.log(updatedReview);
+            if (!business) return
+            setBusiness((prev: any) => {
+                return {
+                    ...prev,
+                    reviews: prev?.reviews.map((r: any) => r._id === reviewId ? updatedReview : r)
+                }
+            })
+            setUserLikes((prev) => {
+                if (prev.includes(reviewId)) {
+                    return prev.filter((rId) => reviewId !== rId)
+                }
+                else {
+                    return [...prev, reviewId]
+                }
+            })
         } catch (error) {
             console.error('Failed to like review:', error);
         }
@@ -92,11 +113,16 @@ const BusinessDetailsPage: React.FC = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <Button onClick={handleGoBack} className="mb-4">
-                <ArrowLeft className="mr-2 h-4 w-4" /> Back
-            </Button>
-            <Card className="w-full max-w-2xl mx-auto">
+            <Card className="w-full max-w-[60vw] mx-auto">
                 <CardHeader>
+                    <Button onClick={handleGoBack} className='w-fit'>
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                    </Button>
+                    <img
+                        src={business.image}
+                        alt={business.name}
+                        className="w-full h-48 pb-3 object-cover"
+                    />
                     <CardTitle className="text-2xl font-bold">{business.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -109,7 +135,15 @@ const BusinessDetailsPage: React.FC = () => {
                 <CardFooter>
                     <div className="w-full">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-semibold">Reviews ({business.reviews.length})</h3>
+                            <div className='flex gap-4 items-center'>
+                                <h3 className="text-xl font-semibold">Reviews ({business.reviews.length})</h3>
+
+                                <div className="flex items-center text-gray-500">
+                                    <MapPin size={16} className="mr-2" />
+                                    <span>{business.location}</span>
+                                </div>
+                            </div>
+
                             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                                 <DialogTrigger asChild>
                                     <Button>Add Review</Button>
@@ -142,8 +176,17 @@ const BusinessDetailsPage: React.FC = () => {
                                                 onClick={() => handleLikeReview(review._id)}
                                                 className="mr-2"
                                             >
-                                                <ThumbsUp className="mr-1" size={16} />
-                                                <span>{review.likes}</span>
+                                                {userLikes?.includes(review._id) ? (
+                                                    <Fragment>
+                                                        <HeartOff className="mr-1" size={16} />
+                                                        <span>{review.likes}</span>
+                                                    </Fragment>
+                                                ) : (
+                                                    <Fragment>
+                                                        <Heart className="mr-1" size={16} />
+                                                        <span>{review.likes}</span>
+                                                    </Fragment>
+                                                )}
                                             </Button>
                                         </div>
                                     </div>
@@ -159,8 +202,6 @@ const BusinessDetailsPage: React.FC = () => {
 };
 
 export default BusinessDetailsPage;
-
-
 
 
 
