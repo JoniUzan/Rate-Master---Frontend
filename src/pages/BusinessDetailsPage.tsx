@@ -45,7 +45,6 @@ interface Business {
 }
 
 const BusinessDetailsPage: React.FC = () => {
-
   const { loggedInUser, userLikes, setUserLikes } = useAuth();
 
   const [business, setBusiness] = useState<Business | null>(null);
@@ -83,11 +82,10 @@ const BusinessDetailsPage: React.FC = () => {
   }
 
   async function handleLikeReview(reviewId: string) {
-
     const currentLikes = userLikes || [];
     const isLiked = currentLikes.includes(reviewId);
 
-    const updatedLikes = business?.reviews.map(review =>
+    const updatedLikes = business?.reviews.map((review) =>
       review._id === reviewId
         ? { ...review, likes: review.likes + (isLiked ? -1 : 1) }
         : review
@@ -95,12 +93,13 @@ const BusinessDetailsPage: React.FC = () => {
 
     setBusiness((prev: any) => ({
       ...prev,
-      reviews: updatedLikes || []
+      reviews: updatedLikes || [],
     }));
 
-    setUserLikes((prev: any) => isLiked
-      ? (prev || []).filter((rId: any) => rId !== reviewId)
-      : [...(prev || []), reviewId]
+    setUserLikes((prev: any) =>
+      isLiked
+        ? (prev || []).filter((rId: any) => rId !== reviewId)
+        : [...(prev || []), reviewId]
     );
 
     setLoadingLike(reviewId);
@@ -115,7 +114,7 @@ const BusinessDetailsPage: React.FC = () => {
         ...prev,
         reviews: prev?.reviews.map((r: any) =>
           r._id === reviewId ? updatedReview : r
-        )
+        ),
       }));
     } catch (error) {
       console.error("Failed to like review:", error);
@@ -124,13 +123,17 @@ const BusinessDetailsPage: React.FC = () => {
         ...prev,
         reviews: prev?.reviews.map((r: any) =>
           r._id === reviewId
-            ? { ...r, likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1) }
+            ? {
+                ...r,
+                likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
+              }
             : r
-        )
+        ),
       }));
-      setUserLikes(prev => isLiked
-        ? [...(prev || []), reviewId]
-        : (prev || []).filter(rId => rId !== reviewId)
+      setUserLikes((prev) =>
+        isLiked
+          ? [...(prev || []), reviewId]
+          : (prev || []).filter((rId) => rId !== reviewId)
       );
     } finally {
       setLoadingLike(null);

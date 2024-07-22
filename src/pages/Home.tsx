@@ -10,8 +10,8 @@ function Home() {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary">
       <main>
         <EnterSection />
-        <KeyFeatures />
         <HomeCarusele />
+        <KeyFeatures />
         <Getstarted />
       </main>
     </div>
