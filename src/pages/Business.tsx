@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/utils";
@@ -7,10 +7,12 @@ import { motion } from "framer-motion";
 import PaginationComponent from '../components/self-made/PaganationSelf';
 
 function Business() {
+
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   interface Business {
     _id: string;
@@ -84,7 +86,7 @@ function Business() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Card onClick={() => { navigate(`/business/${business._id}`) }} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <img
                   src={business.image}
                   alt={business.name}
