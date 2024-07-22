@@ -13,7 +13,6 @@ function Home() {
         <KeyFeatures />
         <HomeCarusele />
         <Getstarted />
-        <GoogleMaps />
       </main>
     </div>
   );
