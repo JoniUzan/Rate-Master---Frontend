@@ -1,5 +1,5 @@
+import { toast } from "@/components/ui/use-toast";
 import { api } from "../lib/utils";
-
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -44,17 +44,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      setLoggedInUser(null);
-      console.log("User is not logged in")
-      return;
-    }
+    // if (!token) {
+    //   setLoggedInUser(null);
+    //   console.log("User is not logged in")
+    //   return;
+    // }
 
     async function fetchUser() {
       try {
         const response = await api.get("/auth/loggedInUser");
-        setLoggedInUser(response.data);
-        console.log(response.data);
+        setLoggedInUser(response.data.user);
+        console.log(response.data.user);
       } catch (error: any) {
         if (error.response?.status === 401) {
           console.error("Invalid token, logging out");
@@ -82,7 +82,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log(response.data.token);
       localStorage.setItem("token", `${response.data.token}`);
       console.log("loged in successfully");
+      navigate("/");
     } catch (error) {
+      toast({
+        description: "Error logged in",
+        variant: "destructive",
+      });
       console.error("Error logging in:", error);
     }
   }
@@ -90,9 +95,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   async function register(userData: RegisterCredentials) {
     try {
       await api.post("/auth/register", userData);
+      toast({
+        description: "Signed up successfully",
+        style: {
+          backgroundColor: "lightgreen",
+        },
+      });
       console.log("registered successfully");
-      navigate("/SignIn");
+      navigate("/auth/SignIn");
     } catch (error) {
+      toast({
+        description: "Error signing up",
+        variant: "destructive",
+      });
       console.error("Error registering:", error);
     }
   }
@@ -111,5 +126,3 @@ export function useAuth() {
   }
   return context;
 }
-
-console.log("test");

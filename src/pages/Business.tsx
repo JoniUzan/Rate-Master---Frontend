@@ -25,7 +25,7 @@ function Business() {
     const fetchBusinesses = async () => {
       try {
         const response = await api.get('/business', {
-          params: { 
+          params: {
             page: searchParams.get('page') || 1,
             search: searchParams.get('search') || ''
           }
@@ -49,12 +49,12 @@ function Business() {
 
   if (loading) return <div>Loading...</div>;
 
-  const handleSearch = (e:any) => {
+  const handleSearch = (e: any) => {
     const search = e.target.value;
     setSearchParams({ search, page: '1' });
   };
 
-  const handlePageChange = (page:number) => {
+  const handlePageChange = (page: number) => {
     setSearchParams({ ...Object.fromEntries(searchParams), page: page.toString() });
   };
 
@@ -71,7 +71,7 @@ function Business() {
       </div>
 
       {businesses.length > 0 ? (
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
