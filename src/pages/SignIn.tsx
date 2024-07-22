@@ -13,7 +13,7 @@ import {
   CardFooter,
 } from "../components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { LoginCredentials, useAuth } from "../context/userProvider";
+import { LoginCredentials, useAuth } from "../context/UserProvider";
 
 function SignIn() {
   const navigate = useNavigate();

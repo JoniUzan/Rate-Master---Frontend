@@ -9,7 +9,7 @@ import NotFound from "./pages/NotFound";
 import ContactUs from "./pages/Contact";
 import AuthLayout from "./components/self-made/AuthLayout";
 import MainLayout from "./components/self-made/MainLayout";
-import { useAuth } from "./context/userProvider";
+import { useAuth } from "./context/UserProvider";
 import Business from "./pages/Business";
 import BusinessDetailsPage from "./pages/BusinessDetailsPage";
 
@@ -40,8 +40,10 @@ function App() {
           <Route path="/contact" element={<ContactUs />} />
 
           <Route path="/Business" element={<Business />} />
-          <Route path="/Business/:businessId" element={<BusinessDetailsPage />} />
-
+          <Route
+            path="/Business/:businessId"
+            element={<BusinessDetailsPage />}
+          />
 
           <Route path="*" element={<NotFound />} />
         </Route>

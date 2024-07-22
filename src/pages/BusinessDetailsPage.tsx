@@ -1,3 +1,4 @@
+
 import React, { Fragment, useEffect, useState } from 'react';
 import { api } from '@/lib/utils';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -9,18 +10,20 @@ import { Star, ArrowLeft, MapPin, Heart, HeartOff } from 'lucide-react';
 import { useAuth } from "../context/userProvider";
 import { BusinessDetailsSkeleton } from '@/components/self-made/SelfSkeleton';
 
+
 interface Review {
+  _id: string;
+  content: string;
+  business: string;
+  user: {
     _id: string;
-    content: string;
-    business: string;
-    user: {
-        _id: string;
-        username: string;
-    };
-    likes: number;
+    username: string;
+  };
+  likes: number;
 }
 
 interface Business {
+
     image: string;
     _id: string;
     name: string;
@@ -195,22 +198,19 @@ const BusinessDetailsPage: React.FC = () => {
                                 </div>
                             ))}
                         </div>
+
                     </div>
-                </CardFooter>
-            </Card>
-        </div>
-    );
+                  </div>
+                  <p>{review.content}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
+  );
 };
 
 export default BusinessDetailsPage;
-
-
-
-
-
-
-
-
-
-
 
