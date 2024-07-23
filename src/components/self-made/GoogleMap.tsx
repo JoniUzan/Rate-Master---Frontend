@@ -5,7 +5,6 @@ import {
   APIProvider,
   Map,
   AdvancedMarker,
-  Pin,
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import { googlrApiKey } from "@/lib/googleApi";
@@ -22,7 +21,11 @@ export default function GoogleMaps({ position, location }: GoogleMapsProps) {
   return (
     <APIProvider apiKey={googlrApiKey}>
       <div style={{ height: "100%", width: "100%" }}>
-        <Map zoom={12} center={position} mapId={"aa21e74a7cd52a60"}>
+        <Map
+          defaultZoom={12}
+          defaultCenter={position}
+          mapId={"aa21e74a7cd52a60"}
+        >
           <AdvancedMarker
             position={position}
             onClick={() => setOpen(true)}
