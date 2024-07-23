@@ -229,127 +229,125 @@ const BusinessDetailsPage: React.FC = () => {
   if (!business)
     return <div className="text-center py-4">No business found</div>;
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="w-full max-w-[60vw] mx-auto">
-        <CardHeader>
-          <Button onClick={handleGoBack} className="w-fit">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back
-          </Button>
-          <img
-            src={business.image}
-            alt={business.name}
-            className="w-full h-96 pb-3 object-cover"
-          />
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-between">
-            <div>
-              <CardTitle className="text-2xl font-bold">
-                {business.name}
-              </CardTitle>
-              <p className="text-gray-600 mb-4">{business.description}</p>
-              <div className="flex items-center mb-4">
-                <Star size={16} className="text-yellow-400 mr-1" />
-                <span>{business.stars.toFixed(1)} stars</span>
-              </div>
-            </div>
-            <div className="w-80 h-36 rounded-lg overflow-hidden">
-              <GoogleMaps
-                location={business.location}
-                position={business.coordinates}
-              />
+return (
+  <div className="container mx-auto px-4 py-8">
+    <Card className="w-full max-w-[90vw] md:max-w-[60vw] mx-auto">
+      <CardHeader>
+        <Button onClick={handleGoBack} className="w-fit mb-4">
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back
+        </Button>
+        <img
+          src={business.image}
+          alt={business.name}
+          className="w-full h-48 md:h-96 pb-3 object-cover"
+        />
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col md:flex-row md:justify-between">
+          <div className="mb-4 md:mb-0">
+            <CardTitle className="text-xl md:text-2xl font-bold">
+              {business.name}
+            </CardTitle>
+            <p className="text-gray-600 mb-4">{business.description}</p>
+            <div className="flex items-center mb-4">
+              <Star size={16} className="text-yellow-400 mr-1" />
+              <span>{business.stars.toFixed(1)} stars</span>
             </div>
           </div>
-        </CardContent>
-        <CardFooter>
-          <div className="w-full">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex gap-4 items-center">
-                <h3 className="text-xl font-semibold">
-                  Reviews ({business.reviews.length})
-                </h3>
-                <div className="flex items-center text-gray-500">
-                  <MapPin size={16} className="mr-2" />
-                  <span>{business.location}</span>
-                </div>
+          <div className="w-full md:w-80 h-36 rounded-lg overflow-hidden">
+            <GoogleMaps
+              location={business.location}
+              position={business.coordinates}
+            />
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter>
+        <div className="w-full">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+            <div className="flex flex-col md:flex-row md:gap-4 md:items-center mb-4 md:mb-0">
+              <h3 className="text-lg md:text-xl font-semibold">
+                Reviews ({business.reviews.length})
+              </h3>
+              <div className="flex items-center text-gray-500 mt-2 md:mt-0">
+                <MapPin size={16} className="mr-2" />
+                <span>{business.location}</span>
               </div>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button>Add Review</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle className=" text-accent-foreground">Write a Review</DialogTitle>
-                  </DialogHeader>
-                  <form className=" text-accent-foreground" onSubmit={handleAddReview}>
-                    <Textarea
-                      value={newReview}
-                      onChange={(e) => setNewReview(e.target.value)}
-                      placeholder="Write your review here..."
-                      className="mb-4"
-                    />
-                    <div>
-                    </div>
-                    <Button type="submit">Submit Review</Button>
-                  </form>
-                </DialogContent>
-              </Dialog>
             </div>
-            <div className="space-y-4">
-
-              {business.reviews.map((review) => (
-                <div key={review._id} className="border-t pt-4 mt-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold">
-                        {getInitialLetter(review.user.username)}
-                      </div>
-                      <div className=" flex flex-col">
-                        <p className="font-semibold">{review.user.username}</p>
-                        <p className=" text-xs">posted in: {review.time}</p>
-                      </div>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="w-full md:w-auto">Add Review</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="text-accent-foreground">Write a Review</DialogTitle>
+                </DialogHeader>
+                <form className="text-accent-foreground" onSubmit={handleAddReview}>
+                  <Textarea
+                    value={newReview}
+                    onChange={(e) => setNewReview(e.target.value)}
+                    placeholder="Write your review here..."
+                    className="mb-4"
+                  />
+                  <div>
+                  </div>
+                  <Button type="submit">Submit Review</Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <div className="space-y-4">
+            {business.reviews.map((review) => (
+              <div key={review._id} className="border-t pt-4 mt-4">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-2">
+                  <div className="flex items-center space-x-2 mb-2 md:mb-0">
+                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold">
+                      {getInitialLetter(review.user.username)}
                     </div>
-                    <div className="flex items-center text-gray-500">
-                      <DeleteReview
-                        _id={review._id}
-                        user={review.user}
-                      />
-                      <EditReview
-                        _id={review._id}
-                        content={review.content}
-                        user={review.user}
-                      />
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleLikeReview(review._id)}
-                        disabled={loadingLike === review._id}
-                        className="mr-2"
-                      >
-                        {userLikes?.includes(review._id) ? (
-                          <div className="flex flex-row items-center">
-                            <HeartOff className="mr-1" size={16} />
-                            <span>{review.likes}</span>
-                          </div>
-                        ) : (
-                          <div className="flex flex-row items-center">
-                            <Heart className="mr-1 text-red-600" size={16} />
-                            <span>{review.likes}</span>
-                          </div>
-                        )}
-                      </Button>
+                    <div className="flex flex-col">
+                      <p className="font-semibold">{review.user.username}</p>
+                      <p className="text-xs">posted in: {review.time}</p>
                     </div>
                   </div>
-                  <p>{review.content}</p>
+                  <div className="flex items-center text-gray-500">
+                    <DeleteReview
+                      _id={review._id}
+                      user={review.user}
+                    />
+                    <EditReview
+                      _id={review._id}
+                      content={review.content}
+                      user={review.user}
+                    />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleLikeReview(review._id)}
+                      disabled={loadingLike === review._id}
+                      className="mr-2"
+                    >
+                      {userLikes?.includes(review._id) ? (
+                        <div className="flex flex-row items-center">
+                          <HeartOff className="mr-1" size={16} />
+                          <span>{review.likes}</span>
+                        </div>
+                      ) : (
+                        <div className="flex flex-row items-center">
+                          <Heart className="mr-1 text-red-600" size={16} />
+                          <span>{review.likes}</span>
+                        </div>
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              ))}
-            </div>
+                <p>{review.content}</p>
+              </div>
+            ))}
           </div>
-        </CardFooter>
-      </Card>
-    </div>
-  );
-};
+        </div>
+      </CardFooter>
+    </Card>
+  </div>
+);};
 
 export default BusinessDetailsPage;
