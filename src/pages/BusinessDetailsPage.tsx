@@ -35,6 +35,7 @@ interface Review {
     username: string;
   };
   likes: number;
+  time: string;
 }
 
 interface Business {
@@ -107,10 +108,9 @@ const BusinessDetailsPage: React.FC = () => {
     const isLiked = currentLikes.includes(reviewId);
 
     if (!loggedInUser) {
-      navigate("/auth/SignIn")
+      navigate("/auth/SignIn");
     }
     const updatedLikes = business?.reviews.map(review =>
-
       review._id === reviewId
         ? { ...review, likes: review.likes + (isLiked ? -1 : 1) }
         : review
@@ -183,6 +183,7 @@ const BusinessDetailsPage: React.FC = () => {
       console.error("Failed to add review:", error);
     }
   }
+
   const handleReviewDelete = (reviewId: string) => {
     setBusiness((prevBusiness) => {
       if (!prevBusiness) return null;
@@ -203,6 +204,10 @@ const BusinessDetailsPage: React.FC = () => {
         ),
       };
     });
+  };
+
+  const getInitialLetter = (username: string) => {
+    return username.charAt(0).toUpperCase();
   };
 
   if (loading) return <BusinessDetailsSkeleton />;
@@ -241,7 +246,6 @@ const BusinessDetailsPage: React.FC = () => {
               />
             </div>
           </div>
-          <div>asd</div>
         </CardContent>
         <CardFooter>
           <div className="w-full">
@@ -261,9 +265,9 @@ const BusinessDetailsPage: React.FC = () => {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Write a Review</DialogTitle>
+                    <DialogTitle className=" text-accent-foreground">Write a Review</DialogTitle>
                   </DialogHeader>
-                  <form onSubmit={handleAddReview}>
+                  <form className=" text-accent-foreground" onSubmit={handleAddReview}>
                     <Textarea
                       value={newReview}
                       onChange={(e) => setNewReview(e.target.value)}
@@ -283,13 +287,15 @@ const BusinessDetailsPage: React.FC = () => {
                           </svg>
                         ))}
                       </div>
-                      <Slider
-                        value={sliderValue}
+
+                      <Slider 
+                        value={sliderValue} 
                         onValueChange={setSliderValue}
                         min={1}
-                        max={5}
+                        max={5} 
                         step={1}
-                        className="mt-2"
+                        className="my-4" 
+
                       />
                     </div>
                     <Button type="submit">Submit Review</Button>
@@ -301,7 +307,15 @@ const BusinessDetailsPage: React.FC = () => {
               {business.reviews.map((review) => (
                 <div key={review._id} className="border-t pt-4 mt-4">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="font-semibold">{review.user.username}</p>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold">
+                        {getInitialLetter(review.user.username)}
+                      </div>
+                      <div className=" flex flex-col">
+                      <p className="font-semibold">{review.user.username}</p>
+                      <p className=" text-xs">posted in: {review.time }</p>
+                      </div>
+                    </div>
                     <div className="flex items-center text-gray-500">
                       <DeleteReview
                         _id={review._id}
@@ -345,4 +359,5 @@ const BusinessDetailsPage: React.FC = () => {
     </div>
   );
 };
+
 export default BusinessDetailsPage;
