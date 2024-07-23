@@ -38,7 +38,7 @@ function HomeCarusele() {
 
   return (
     <section className="pt-44 bg-background">
-      <div className="container  px-4 w-[90%]">
+      <div className="container  px-4 w-[80%]">
         <h2 className="text-4xl font-bold mb-8  text-primary">
           Our Highest Rated Business
         </h2>

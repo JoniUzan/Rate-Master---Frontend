@@ -23,7 +23,8 @@ import { BusinessDetailsSkeleton } from "@/components/self-made/SelfSkeleton";
 import GoogleMaps from "@/components/self-made/GoogleMap";
 import EditReview from "@/components/self-made/EditReview";
 import DeleteReview from "@/components/self-made/DeleteReview";
-import { socket } from "../App"
+import { socket } from "../App";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Review {
   _id: string;
@@ -32,6 +33,7 @@ interface Review {
   user: {
     _id: string;
     username: string;
+    image: string;
   };
   likes: number;
   time: string;
@@ -89,7 +91,9 @@ const BusinessDetailsPage: React.FC = () => {
         if (!prevBusiness) return null;
         return {
           ...prevBusiness,
-          reviews: prevBusiness.reviews.filter((review) => review._id !== reviewToDelete._id),
+          reviews: prevBusiness.reviews.filter(
+            (review) => review._id !== reviewToDelete._id
+          ),
         };
       });
     });
@@ -100,13 +104,13 @@ const BusinessDetailsPage: React.FC = () => {
         return {
           ...prevBusiness,
           reviews: prevBusiness.reviews.map((review) =>
-            review._id === updateReviewContent._id ? { ...review, content: updateReviewContent.content } : review
+            review._id === updateReviewContent._id
+              ? { ...review, content: updateReviewContent.content }
+              : review
           ),
         };
       });
     });
-
-
 
     return () => {
       socket.off("newReview");
@@ -134,7 +138,6 @@ const BusinessDetailsPage: React.FC = () => {
   };
 
   async function handleGoBack() {
-
     navigate(-1);
   }
 
@@ -146,7 +149,7 @@ const BusinessDetailsPage: React.FC = () => {
     if (!loggedInUser) {
       navigate("/auth/SignIn");
     }
-    const updatedLikes = business?.reviews.map(review =>
+    const updatedLikes = business?.reviews.map((review) =>
       review._id === reviewId
         ? { ...review, likes: review.likes + (isLiked ? -1 : 1) }
         : review
@@ -185,9 +188,9 @@ const BusinessDetailsPage: React.FC = () => {
         reviews: prev?.reviews.map((r: any) =>
           r._id === reviewId
             ? {
-              ...r,
-              likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
-            }
+                ...r,
+                likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
+              }
             : r
         ),
       }));
@@ -215,15 +218,14 @@ const BusinessDetailsPage: React.FC = () => {
 
       setNewReview("");
       setIsDialogOpen(false);
-
     } catch (error) {
       console.error("Failed to add review:", error);
     }
   }
 
-  const getInitialLetter = (username: string) => {
-    return username.charAt(0).toUpperCase();
-  };
+  // const getInitialLetter = (username: string) => {
+  //   return username.charAt(0).toUpperCase();
+  // };
 
   if (loading) return <BusinessDetailsSkeleton />;
   if (!business)
@@ -280,30 +282,41 @@ const BusinessDetailsPage: React.FC = () => {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle className=" text-accent-foreground">Write a Review</DialogTitle>
+                    <DialogTitle className=" text-accent-foreground">
+                      Write a Review
+                    </DialogTitle>
                   </DialogHeader>
-                  <form className=" text-accent-foreground" onSubmit={handleAddReview}>
+                  <form
+                    className=" text-accent-foreground"
+                    onSubmit={handleAddReview}
+                  >
                     <Textarea
                       value={newReview}
                       onChange={(e) => setNewReview(e.target.value)}
                       placeholder="Write your review here..."
                       className="mb-4"
                     />
-                    <div>
-                    </div>
+                    <div></div>
                     <Button type="submit">Submit Review</Button>
                   </form>
                 </DialogContent>
               </Dialog>
             </div>
             <div className="space-y-4">
-
               {business.reviews.map((review) => (
                 <div key={review._id} className="border-t pt-4 mt-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-2">
                       <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold">
-                        {getInitialLetter(review.user.username)}
+                        <Avatar>
+                          {review.user.image && (
+                            <AvatarImage src={review.user.image} />
+                          )}
+
+                          <AvatarFallback className="text-foreground">
+                            {review.user.username[0].toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
                       </div>
                       <div className=" flex flex-col">
                         <p className="font-semibold">{review.user.username}</p>
@@ -311,10 +324,7 @@ const BusinessDetailsPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex items-center text-gray-500">
-                      <DeleteReview
-                        _id={review._id}
-                        user={review.user}
-                      />
+                      <DeleteReview _id={review._id} user={review.user} />
                       <EditReview
                         _id={review._id}
                         content={review.content}
