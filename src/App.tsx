@@ -12,6 +12,9 @@ import MainLayout from "./components/self-made/MainLayout";
 import { useAuth } from "./context/UserProvider";
 import Business from "./pages/Business";
 import BusinessDetailsPage from "./pages/BusinessDetailsPage";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:3000/");
 
 function App() {
   // home, login ,register

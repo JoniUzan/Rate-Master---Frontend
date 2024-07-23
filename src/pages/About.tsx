@@ -1,5 +1,6 @@
 import { Button } from "../components/ui/button"
 
+
 function About() {
   return (
     <div className="min-h-screen bg-background text-foreground">
