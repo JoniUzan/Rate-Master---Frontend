@@ -21,10 +21,9 @@ interface DeleteReviewProps {
     _id: string;
     username: string;
   };
-  onReviewDelete: (id: string) => void;
 }
 
-function DeleteReview({ _id, user, onReviewDelete }: DeleteReviewProps) {
+function DeleteReview({ _id, user, }: DeleteReviewProps) {
   const { loggedInUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,7 +31,6 @@ function DeleteReview({ _id, user, onReviewDelete }: DeleteReviewProps) {
     try {
       const response = await api.delete(`business/reviews/${_id}`);
       if (response.status === 200) {
-        onReviewDelete(_id);
         setIsOpen(false);
       }
     } catch (error) {

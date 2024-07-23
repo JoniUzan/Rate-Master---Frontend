@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../context/UserProvider";
 import { api } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,9 @@ interface EditReviewProps {
     _id: string;
     username: string;
   };
-  onReviewUpdate: (id: string, newContent: string) => void;
 }
 
-function EditReview({ _id, content, user, onReviewUpdate }: EditReviewProps) {
+function EditReview({ _id, content, user }: EditReviewProps) {
   const { loggedInUser } = useAuth();
   const [editedContent, setEditedContent] = useState(content);
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +33,6 @@ function EditReview({ _id, content, user, onReviewUpdate }: EditReviewProps) {
         content: editedContent,
       });
       if (response.status === 200) {
-        onReviewUpdate(_id, editedContent);
         setIsOpen(false);
       }
     } catch (error) {
@@ -70,7 +68,7 @@ function EditReview({ _id, content, user, onReviewUpdate }: EditReviewProps) {
         </div>
         <div className="flex flex-col gap-3 mt-4">
           <Button onClick={handleEdit}>Save changes</Button>
-          <Button  className=" text-accent-foreground"  variant="outline" onClick={() => setIsOpen(false)}>
+          <Button className=" text-accent-foreground" variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
         </div>
