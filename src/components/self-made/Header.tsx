@@ -14,6 +14,8 @@ import {
 import { Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import logo from "../../assets/Logo.png";
+
 function Header() {
   const { loggedInUser, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +26,7 @@ function Header() {
     <header className="py-2 text-secondary-foreground sticky top-0 z-50 shadow-md backdrop-blur-lg">
       <nav className="flex justify-between items-center px-4 md:px-8">
         <Link to={"/"}>
-          <img className="w-32 md:w-40" src="src\assets\Logo.png" alt="Logo" />
+          <img className="w-32 md:w-40" src={logo} alt="Logo" />
         </Link>
 
         <div className="hidden md:flex md:gap-6">
