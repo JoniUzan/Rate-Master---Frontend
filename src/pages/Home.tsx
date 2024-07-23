@@ -2,8 +2,6 @@
 import KeyFeatures from "@/components/self-made/KeyFeatures";
 import EnterSection from "@/components/self-made/EnterSection";
 import HomeCarusele from "@/components/self-made/HomeCarusele";
-import Getstarted from "@/components/self-made/Getstarted";
-
 import About from "./About";
 
 function Home() {

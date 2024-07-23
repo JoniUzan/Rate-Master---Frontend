@@ -42,7 +42,7 @@ function HomeCarusele() {
         <h2 className="text-4xl font-bold mb-8  text-primary">
           Our Highest Rated Business
         </h2>
-        <Carousel className="w-full mx-auto">
+        <Carousel className=" max-w-6xl mx-auto">
           <CarouselContent>
             {topBusinesse.map((business, index) => {
               return (
