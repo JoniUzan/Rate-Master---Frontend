@@ -111,6 +111,8 @@ const BusinessDetailsPage: React.FC = () => {
     return () => {
       socket.off("newReview");
       socket.off("reviewUpdated");
+      socket.off("updateReviewContent");
+      socket.off("reviewToDelete");
     };
   }, [businessId]);
 
