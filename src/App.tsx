@@ -14,7 +14,9 @@ import Business from "./pages/Business";
 import BusinessDetailsPage from "./pages/BusinessDetailsPage";
 import io from "socket.io-client";
 
+
 export const socket = io("http://localhost:3000");
+
 
 
 function App() {
@@ -38,7 +40,6 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="/about" element={<About />} />
           <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactUs />} />

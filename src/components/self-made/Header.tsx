@@ -14,18 +14,15 @@ import {
 function Header() {
   const { loggedInUser, logout } = useAuth();
   return (
-    <header className="py-2 bg-muted text-secondary-foreground sticky top-0 z-50 shadow-md">
+    <header className="py-2  text-secondary-foreground sticky top-0 z-50 shadow-md backdrop-blur-lg">
       <nav className="flex justify-between px-8">
         <div className="flex gap-6">
-          <img
-            className=" w-32"
-            src="src\assets\Logo.png"
-          />
+          <img className=" w-32" src="src\assets\Logo.png" />
           <Button variant="ghost" asChild>
             <a href="/">Home</a>
           </Button>
           <Button variant="ghost" asChild>
-            <a href="/about">About</a>
+            <a href="/#about">About</a>
           </Button>
           <Button variant="ghost" asChild>
             <a href="/contact">Contact</a>
