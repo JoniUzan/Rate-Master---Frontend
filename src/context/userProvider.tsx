@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
   const [userLikes, setUserLikes] = useState<string[]>([])
 
-  // const [token, setToken] = useLocalStorage("token");
+
   const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
