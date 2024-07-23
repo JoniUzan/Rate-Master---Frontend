@@ -179,10 +179,12 @@ const BusinessDetailsPage: React.FC = () => {
       setNewReview("");
       setIsDialogOpen(false);
       fetchBusinessData();
+
     } catch (error) {
       console.error("Failed to add review:", error);
     }
   }
+
   const handleReviewDelete = (reviewId: string) => {
     setBusiness((prevBusiness) => {
       if (!prevBusiness) return null;
