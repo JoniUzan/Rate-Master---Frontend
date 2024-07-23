@@ -97,8 +97,8 @@ function FilterBusiness({
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline">
-          <Filter />
+        <Button variant="outline" className="text-foreground">
+          <Filter  />
         </Button>
       </SheetTrigger>
       <SheetContent>

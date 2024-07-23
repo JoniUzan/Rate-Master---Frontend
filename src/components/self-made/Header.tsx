@@ -45,8 +45,14 @@ function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  {loggedInUser.image && (
+                    <AvatarImage src={loggedInUser.image} />
+                  )}
+
+                  <AvatarFallback>
+                    {loggedInUser.firstName[0].toUpperCase()}
+                    {loggedInUser.lastName[0].toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
