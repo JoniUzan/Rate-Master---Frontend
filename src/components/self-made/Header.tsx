@@ -22,7 +22,7 @@ function Header() {
             <a href="/">Home</a>
           </Button>
           <Button variant="ghost" asChild>
-            <a href="#about">About</a>
+            <a href="/#about">About</a>
           </Button>
           <Button variant="ghost" asChild>
             <a href="/contact">Contact</a>
