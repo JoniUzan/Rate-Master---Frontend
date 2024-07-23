@@ -99,6 +99,7 @@ const BusinessDetailsPage: React.FC = () => {
   };
 
   async function handleGoBack() {
+
     navigate(-1);
   }
 
@@ -289,13 +290,13 @@ const BusinessDetailsPage: React.FC = () => {
                         ))}
                       </div>
 
-                      <Slider 
-                        value={sliderValue} 
+                      <Slider
+                        value={sliderValue}
                         onValueChange={setSliderValue}
                         min={1}
-                        max={5} 
+                        max={5}
                         step={1}
-                        className="my-4" 
+                        className="my-4"
 
                       />
                     </div>
@@ -313,8 +314,8 @@ const BusinessDetailsPage: React.FC = () => {
                         {getInitialLetter(review.user.username)}
                       </div>
                       <div className=" flex flex-col">
-                      <p className="font-semibold">{review.user.username}</p>
-                      <p className=" text-xs">posted in: {review.time }</p>
+                        <p className="font-semibold">{review.user.username}</p>
+                        <p className=" text-xs">posted in: {review.time}</p>
                       </div>
                     </div>
                     <div className="flex items-center text-gray-500">
