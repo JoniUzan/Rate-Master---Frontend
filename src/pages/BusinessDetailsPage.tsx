@@ -24,6 +24,7 @@ import GoogleMaps from "@/components/self-made/GoogleMap";
 import EditReview from "@/components/self-made/EditReview";
 import DeleteReview from "@/components/self-made/DeleteReview";
 import { Slider } from "@/components/ui/slider";
+import { socket } from "../App"
 
 interface Review {
   _id: string;
@@ -62,6 +63,22 @@ const BusinessDetailsPage: React.FC = () => {
 
   useEffect(() => {
     fetchBusinessData();
+
+    socket.on("reviewUpdated", (updatedReview) => {
+      setBusiness((prevBusiness) => {
+        if (!prevBusiness) return null;
+        return {
+          ...prevBusiness,
+          reviews: prevBusiness.reviews.map((review) =>
+            review._id === updatedReview._id ? updatedReview : review
+          ),
+        };
+      });
+    });
+
+    return () => {
+      socket.off("reviewUpdated");
+    };
   }, [businessId]);
 
   const fetchBusinessData = async () => {
@@ -87,6 +104,7 @@ const BusinessDetailsPage: React.FC = () => {
 
   async function handleLikeReview(reviewId: string) {
     const currentLikes = userLikes || [];
+
     const isLiked = currentLikes.includes(reviewId);
 
     if (!loggedInUser) {
@@ -131,9 +149,9 @@ const BusinessDetailsPage: React.FC = () => {
         reviews: prev?.reviews.map((r: any) =>
           r._id === reviewId
             ? {
-                ...r,
-                likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
-              }
+              ...r,
+              likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
+            }
             : r
         ),
       }));
@@ -269,6 +287,7 @@ const BusinessDetailsPage: React.FC = () => {
                           </svg>
                         ))}
                       </div>
+
                       <Slider 
                         value={sliderValue} 
                         onValueChange={setSliderValue}
@@ -276,6 +295,7 @@ const BusinessDetailsPage: React.FC = () => {
                         max={5} 
                         step={1}
                         className="my-4" 
+
                       />
                     </div>
                     <Button type="submit">Submit Review</Button>

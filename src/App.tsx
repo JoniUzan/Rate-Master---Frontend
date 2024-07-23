@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import About from "./pages/About";
+
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import PrivacyPolicy from "./pages/privacyPolicy";
@@ -14,7 +14,7 @@ import Business from "./pages/Business";
 import BusinessDetailsPage from "./pages/BusinessDetailsPage";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:3000/");
+export const socket = io("http://localhost:3000");
 
 function App() {
   // home, login ,register
