@@ -6,6 +6,7 @@ import { api } from "@/lib/utils";
 import { motion } from "framer-motion";
 import PaginationComponent from "../components/self-made/PaganationSelf";
 import { BusinessSkeletonPage } from "@/components/self-made/SelfSkeleton";
+import FilterBusiness from "@/components/self-made/FilterBusiness";
 
 function Business() {
   const [businesses, setBusinesses] = useState([]);
@@ -30,6 +31,8 @@ function Business() {
           params: {
             page: searchParams.get("page") || 1,
             search: searchParams.get("search") || "",
+            category: searchParams.get("category") || "",
+            location: searchParams.get("location") || "",
           },
         });
         const data = response.data;
@@ -56,7 +59,13 @@ function Business() {
 
   const handleSearch = (e: any) => {
     const search = e.target.value;
-    setSearchParams({ search, page: "1" });
+    setSearchParams((prev) => {
+      return {
+        ...prev,
+        search: search,
+        page: "1",
+      };
+    });
   };
 
   const handlePageChange = (page: number) => {
@@ -68,13 +77,17 @@ function Business() {
 
   return (
     <div className="container mx-auto p-4 bg-background">
-      <div className="mb-8">
+      <div className="mb-8 flex justify-center items-center gap-8">
         <Input
           type="text"
           placeholder="Search businesses..."
           value={searchParams.get("search") || ""}
           onChange={handleSearch}
-          className="w-full max-w-md mx-auto"
+          className="w-full max-w-md"
+        />
+        <FilterBusiness
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
         />
       </div>
 
