@@ -106,12 +106,13 @@ function FilterBusiness({
           <SheetTitle className="text-center">Filter</SheetTitle>
         </SheetHeader>
         <div className="grid gap-4 py-4">
-          <div className="flex flex-col gap-8 justify-center items-center">
+          <div className="flex flex-col gap-8 justify-center items-center text-accent-foreground">
             <Select
               value={category}
               onValueChange={(value) => {
                 setCategory(value);
                 handleFilter("category", value);
+                
               }}
             >
               <SelectTrigger className="w-[280px]">
