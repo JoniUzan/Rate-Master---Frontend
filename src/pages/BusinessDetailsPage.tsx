@@ -24,6 +24,7 @@ import GoogleMaps from "@/components/self-made/GoogleMap";
 import EditReview from "@/components/self-made/EditReview";
 import DeleteReview from "@/components/self-made/DeleteReview";
 import { Slider } from "@/components/ui/slider";
+import { socket } from "../App"
 
 interface Review {
   _id: string;
@@ -55,12 +56,28 @@ const BusinessDetailsPage: React.FC = () => {
   const [newReview, setNewReview] = useState<string>("");
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [loadingLike, setLoadingLike] = useState<string | null>(null);
-const [sliderValue, setSliderValue] = useState<number[]>([3]);
+  const [sliderValue, setSliderValue] = useState<number[]>([3]);
   const { businessId } = useParams<{ businessId: string }>();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchBusinessData();
+
+    socket.on("reviewUpdated", (updatedReview) => {
+      setBusiness((prevBusiness) => {
+        if (!prevBusiness) return null;
+        return {
+          ...prevBusiness,
+          reviews: prevBusiness.reviews.map((review) =>
+            review._id === updatedReview._id ? updatedReview : review
+          ),
+        };
+      });
+    });
+
+    return () => {
+      socket.off("reviewUpdated");
+    };
   }, [businessId]);
 
   const fetchBusinessData = async () => {
@@ -86,6 +103,7 @@ const [sliderValue, setSliderValue] = useState<number[]>([3]);
 
   async function handleLikeReview(reviewId: string) {
     const currentLikes = userLikes || [];
+
     const isLiked = currentLikes.includes(reviewId);
 
     if (!loggedInUser) {
@@ -131,9 +149,9 @@ const [sliderValue, setSliderValue] = useState<number[]>([3]);
         reviews: prev?.reviews.map((r: any) =>
           r._id === reviewId
             ? {
-                ...r,
-                likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
-              }
+              ...r,
+              likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
+            }
             : r
         ),
       }));
@@ -165,7 +183,7 @@ const [sliderValue, setSliderValue] = useState<number[]>([3]);
       console.error("Failed to add review:", error);
     }
   }
-   const handleReviewDelete = (reviewId: string) => {
+  const handleReviewDelete = (reviewId: string) => {
     setBusiness((prevBusiness) => {
       if (!prevBusiness) return null;
       return {
@@ -253,27 +271,27 @@ const [sliderValue, setSliderValue] = useState<number[]>([3]);
                       className="mb-4"
                     />
                     <div>
-      <div className="flex items-center">
-        {[...Array(5)].map((_, i) => (
-          <svg
-            key={i}
-            className={`w-5 h-5 ${i < sliderValue[0] ? 'text-yellow-400' : 'text-gray-300'}`}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-        ))}
-      </div>
-      <Slider 
-        value={sliderValue} 
-        onValueChange={setSliderValue}
-        min={1}
-        max={5} 
-        step={1}
-        className="mt-2" 
-      />
-    </div>
+                      <div className="flex items-center">
+                        {[...Array(5)].map((_, i) => (
+                          <svg
+                            key={i}
+                            className={`w-5 h-5 ${i < sliderValue[0] ? 'text-yellow-400' : 'text-gray-300'}`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <Slider
+                        value={sliderValue}
+                        onValueChange={setSliderValue}
+                        min={1}
+                        max={5}
+                        step={1}
+                        className="mt-2"
+                      />
+                    </div>
                     <Button type="submit">Submit Review</Button>
                   </form>
                 </DialogContent>
@@ -290,11 +308,11 @@ const [sliderValue, setSliderValue] = useState<number[]>([3]);
                         user={review.user}
                         onReviewDelete={handleReviewDelete}
                       />
-                    <EditReview
-                      _id={review._id}
-                      content={review.content}
-                      user={review.user}
-                      onReviewUpdate={handleReviewUpdate}
+                      <EditReview
+                        _id={review._id}
+                        content={review.content}
+                        user={review.user}
+                        onReviewUpdate={handleReviewUpdate}
                       />
                       <Button
                         variant="ghost"
