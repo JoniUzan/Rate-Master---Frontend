@@ -6,9 +6,10 @@ import { api } from "@/lib/utils";
 import { motion } from "framer-motion";
 import PaginationComponent from "../components/self-made/PaganationSelf";
 import { BusinessSkeletonPage } from "@/components/self-made/SelfSkeleton";
+import FilterBusiness from "@/components/self-made/FilterBusiness";
 
 function Business() {
-  const [businesses, setBusinesses] = useState([]);
+  const [businesses, setBusinesses] = useState<Business[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,6 +31,8 @@ function Business() {
           params: {
             page: searchParams.get("page") || 1,
             search: searchParams.get("search") || "",
+            category: searchParams.get("category") || "",
+            location: searchParams.get("location") || "",
           },
         });
         const data = response.data;
@@ -37,10 +40,7 @@ function Business() {
           setBusinesses(data.businesses);
           setTotalPages(data.totalPages);
         } else {
-          console.error(
-            "Expected businesses array in response, but got:",
-            data
-          );
+          console.error("Expected businesses array in response, but got:", data);
         }
       } catch (err) {
         console.error("Error fetching businesses:", err);
@@ -54,9 +54,15 @@ function Business() {
 
   if (loading) return <BusinessSkeletonPage />;
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value;
-    setSearchParams({ search, page: "1" });
+    setSearchParams((prev) => {
+      return {
+        ...prev,
+        search: search,
+        page: "1",
+      };
+    });
   };
 
   const handlePageChange = (page: number) => {
@@ -68,13 +74,19 @@ function Business() {
 
   return (
     <div className="container mx-auto p-4 bg-background">
-      <div className="mb-8">
+      <div className="mb-8 flex justify-center items-center gap-8">
         <Input
           type="text"
           placeholder="Search businesses..."
           value={searchParams.get("search") || ""}
           onChange={handleSearch}
-          className="w-full max-w-md mx-auto"
+
+          className="w-full max-w-md"
+        />
+        <FilterBusiness
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+
         />
       </div>
 
@@ -104,9 +116,7 @@ function Business() {
                   className="w-full h-96 object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 backdrop-blur-md p-6">
-                  <h2 className="text-2xl font-bold mb-2 text-white">
-                    {business.name}
-                  </h2>
+                  <h2 className="text-2xl font-bold mb-2 text-white">{business.name}</h2>
                   <p className="text-white mb-4">{business.description}</p>
                   <div className="flex justify-between items-center">
                     <p className="text-sm text-gray-100">{business.location}</p>
@@ -114,11 +124,7 @@ function Business() {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`w-5 h-5 ${
-                            i < business.stars
-                              ? "text-yellow-400"
-                              : "text-gray-300"
-                          }`}
+                          className={`w-5 h-5 ${i < business.stars ? "text-yellow-400" : "text-gray-300"}`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -133,7 +139,7 @@ function Business() {
           ))}
         </motion.div>
       ) : (
-        <div className="text-center text-background">No businesses found.</div>
+        <div className="text-center  text-accent-foreground">No businesses found.</div>
       )}
 
       <PaginationComponent

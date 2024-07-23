@@ -65,12 +65,12 @@ function EditReview({ _id, content, user, onReviewUpdate }: EditReviewProps) {
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
             placeholder="Edit your review..."
-            className="col-span-3"
+            className="col-span-3 text-accent-foreground"
           />
         </div>
         <div className="flex flex-col gap-3 mt-4">
           <Button onClick={handleEdit}>Save changes</Button>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <Button  className=" text-accent-foreground"  variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
         </div>
