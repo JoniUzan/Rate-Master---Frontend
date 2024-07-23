@@ -23,7 +23,8 @@ import { BusinessDetailsSkeleton } from "@/components/self-made/SelfSkeleton";
 import GoogleMaps from "@/components/self-made/GoogleMap";
 import EditReview from "@/components/self-made/EditReview";
 import DeleteReview from "@/components/self-made/DeleteReview";
-import { socket } from "../App"
+import { socket } from "../App";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import StarAddToReview from "@/components/self-made/StarsAddToReviewComp";
 
 interface Review {
@@ -33,6 +34,7 @@ interface Review {
   user: {
     _id: string;
     username: string;
+    image: string;
   };
   likes: number;
   time: string;
@@ -91,7 +93,9 @@ const BusinessDetailsPage: React.FC = () => {
         if (!prevBusiness) return null;
         return {
           ...prevBusiness,
-          reviews: prevBusiness.reviews.filter((review) => review._id !== reviewToDelete._id),
+          reviews: prevBusiness.reviews.filter(
+            (review) => review._id !== reviewToDelete._id
+          ),
         };
       });
     });
@@ -102,13 +106,13 @@ const BusinessDetailsPage: React.FC = () => {
         return {
           ...prevBusiness,
           reviews: prevBusiness.reviews.map((review) =>
-            review._id === updateReviewContent._id ? { ...review, content: updateReviewContent.content } : review
+            review._id === updateReviewContent._id
+              ? { ...review, content: updateReviewContent.content }
+              : review
           ),
         };
       });
     });
-
-
 
     return () => {
       socket.off("newReview");
@@ -136,7 +140,6 @@ const BusinessDetailsPage: React.FC = () => {
   };
 
   async function handleGoBack() {
-
     navigate(-1);
   }
 
@@ -148,7 +151,7 @@ const BusinessDetailsPage: React.FC = () => {
     if (!loggedInUser) {
       navigate("/auth/SignIn");
     }
-    const updatedLikes = business?.reviews.map(review =>
+    const updatedLikes = business?.reviews.map((review) =>
       review._id === reviewId
         ? { ...review, likes: review.likes + (isLiked ? -1 : 1) }
         : review
@@ -219,15 +222,14 @@ const BusinessDetailsPage: React.FC = () => {
       setRating(0);
       setNewReview("");
       setIsDialogOpen(false);
-
     } catch (error) {
       console.error("Failed to add review:", error);
     }
   }
 
-  const getInitialLetter = (username: string) => {
-    return username.charAt(0).toUpperCase();
-  };
+  // const getInitialLetter = (username: string) => {
+  //   return username.charAt(0).toUpperCase();
+  // };
 
   if (loading) return <BusinessDetailsSkeleton />;
   if (!business)
@@ -235,21 +237,21 @@ const BusinessDetailsPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="w-full max-w-[60vw] mx-auto">
+      <Card className="w-full max-w-[90vw] md:max-w-[60vw] mx-auto">
         <CardHeader>
-          <Button onClick={handleGoBack} className="w-fit">
+          <Button onClick={handleGoBack} className="w-fit mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" /> Back
           </Button>
           <img
             src={business.image}
             alt={business.name}
-            className="w-full h-96 pb-3 object-cover"
+            className="w-full h-48 md:h-96 pb-3 object-cover"
           />
         </CardHeader>
         <CardContent>
-          <div className="flex justify-between">
-            <div>
-              <CardTitle className="text-2xl font-bold">
+          <div className="flex flex-col md:flex-row md:justify-between">
+            <div className="mb-4 md:mb-0">
+              <CardTitle className="text-xl md:text-2xl font-bold">
                 {business.name}
               </CardTitle>
               <p className="text-gray-600 mb-4">{business.description}</p>
@@ -258,7 +260,7 @@ const BusinessDetailsPage: React.FC = () => {
                 <span>{business.stars.toFixed(1)} stars</span>
               </div>
             </div>
-            <div className="w-80 h-36 rounded-lg overflow-hidden">
+            <div className="w-full md:w-80 h-36 rounded-lg overflow-hidden">
               <GoogleMaps
                 location={business.location}
                 position={business.coordinates}
@@ -268,23 +270,26 @@ const BusinessDetailsPage: React.FC = () => {
         </CardContent>
         <CardFooter>
           <div className="w-full">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex gap-4 items-center">
-                <h3 className="text-xl font-semibold">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+              <div className="flex flex-col md:flex-row md:gap-4 md:items-center mb-4 md:mb-0">
+                <h3 className="text-lg md:text-xl font-semibold">
                   Reviews ({business.reviews.length})
                 </h3>
-                <div className="flex items-center text-gray-500">
+                <div className="flex items-center text-gray-500 mt-2 md:mt-0">
                   <MapPin size={16} className="mr-2" />
                   <span>{business.location}</span>
                 </div>
               </div>
+
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                   <Button>Add Review</Button>
                 </DialogTrigger>
                 <DialogContent aria-describedby="">
                   <DialogHeader>
-                    <DialogTitle className=" text-accent-foreground">Write a Review</DialogTitle>
+                    <DialogTitle className="text-accent-foreground">
+                      Write a Review
+                    </DialogTitle>
                   </DialogHeader>
                   <form className="flex flex-col gap-6 text-accent-foreground" onSubmit={handleAddReview}>
                     <Textarea
@@ -299,24 +304,27 @@ const BusinessDetailsPage: React.FC = () => {
               </Dialog>
             </div>
             <div className="space-y-4">
-
               {business.reviews.map((review) => (
                 <div key={review._id} className="border-t pt-4 mt-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-2">
                       <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold">
-                        {getInitialLetter(review.user.username)}
+                        <Avatar>
+                          {review.user.image && (
+                            <AvatarImage src={review.user.image} />
+                          )}
+                          <AvatarFallback className="text-foreground">
+                            {review.user.username[0].toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
                       </div>
-                      <div className=" flex flex-col">
+                      <div className="flex flex-col">
                         <p className="font-semibold">{review.user.username}</p>
-                        <p className=" text-xs">posted in: {review.time}</p>
+                        <p className="text-xs">posted in: {review.time}</p>
                       </div>
                     </div>
                     <div className="flex items-center text-gray-500">
-                      <DeleteReview
-                        _id={review._id}
-                        user={review.user}
-                      />
+                      <DeleteReview _id={review._id} user={review.user} />
                       <EditReview
                         _id={review._id}
                         content={review.content}
