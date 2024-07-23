@@ -22,7 +22,7 @@ function Header() {
   return (
     <header className="py-2 text-secondary-foreground sticky top-0 z-50 shadow-md backdrop-blur-lg">
       <nav className="flex justify-between items-center px-4 md:px-8">
-        <img className="w-24 md:w-32" src="src\assets\Logo.png" alt="Logo" />
+        <img className="w-32 md:w-40" src="src\assets\Logo.png" alt="Logo" />
 
         <div className="hidden md:flex md:gap-6">
           <Button variant="ghost" asChild>
