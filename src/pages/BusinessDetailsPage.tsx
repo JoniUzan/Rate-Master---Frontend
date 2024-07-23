@@ -25,6 +25,7 @@ import EditReview from "@/components/self-made/EditReview";
 import DeleteReview from "@/components/self-made/DeleteReview";
 import { socket } from "../App";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import StarAddToReview from "@/components/self-made/StarsAddToReviewComp";
 
 interface Review {
   _id: string;
@@ -59,6 +60,7 @@ const BusinessDetailsPage: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [loadingLike, setLoadingLike] = useState<string | null>(null);
   const { businessId } = useParams<{ businessId: string }>();
+  const [rating, setRating] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -188,9 +190,9 @@ const BusinessDetailsPage: React.FC = () => {
         reviews: prev?.reviews.map((r: any) =>
           r._id === reviewId
             ? {
-                ...r,
-                likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
-              }
+              ...r,
+              likes: r.likes - (currentLikes.includes(reviewId) ? -1 : 1),
+            }
             : r
         ),
       }));
@@ -206,6 +208,7 @@ const BusinessDetailsPage: React.FC = () => {
 
   async function handleAddReview(e: React.FormEvent) {
     e.preventDefault();
+
     if (!loggedInUser) {
       navigate("/auth/SignIn");
       return;
@@ -214,8 +217,9 @@ const BusinessDetailsPage: React.FC = () => {
     if (!newReview.trim()) return;
 
     try {
-      await api.post(`business/reviews/${businessId}`, { content: newReview });
+      await api.post(`business/reviews/${businessId}`, { content: newReview, rating: rating });
 
+      setRating(0);
       setNewReview("");
       setIsDialogOpen(false);
     } catch (error) {
@@ -281,22 +285,19 @@ const BusinessDetailsPage: React.FC = () => {
                 <DialogTrigger asChild>
                   <Button>Add Review</Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent aria-describedby="">
                   <DialogHeader>
                     <DialogTitle className="text-accent-foreground">
                       Write a Review
                     </DialogTitle>
                   </DialogHeader>
-                  <form
-                    className="text-accent-foreground"
-                    onSubmit={handleAddReview}
-                  >
+                  <form className="flex flex-col gap-6 text-accent-foreground" onSubmit={handleAddReview}>
                     <Textarea
                       value={newReview}
                       onChange={(e) => setNewReview(e.target.value)}
                       placeholder="Write your review here..."
-                      className="mb-4"
                     />
+                    <StarAddToReview rating={rating} onRatingChange={setRating} />
                     <Button type="submit">Submit Review</Button>
                   </form>
                 </DialogContent>
