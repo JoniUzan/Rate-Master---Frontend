@@ -42,11 +42,11 @@ function HomeCarusele() {
         <h2 className="text-4xl font-bold mb-8 ml-12 text-primary">
           Our Highest Rated Business
         </h2>
-        <Carousel className="w-full max-w-4xl ml-12">
+        <Carousel className="w-full max-w-6xl ml-12">
           <CarouselContent>
             {topBusinesse.map((item, index) => {
               return (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
                   <div className="p-1">
                     <Card
                       onClick={() => {
