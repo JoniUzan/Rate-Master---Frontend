@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/utils";
 import { motion } from "framer-motion";
-import PaginationComponent from '../components/self-made/PaganationSelf';
-import {BusinessSkeletonPage} from '@/components/self-made/SelfSkeleton';
+import PaginationComponent from "../components/self-made/PaganationSelf";
+import { BusinessSkeletonPage } from "@/components/self-made/SelfSkeleton";
 
 function Business() {
-
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
@@ -27,21 +26,24 @@ function Business() {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const response = await api.get('/business', {
+        const response = await api.get("/business", {
           params: {
-            page: searchParams.get('page') || 1,
-            search: searchParams.get('search') || ''
-          }
+            page: searchParams.get("page") || 1,
+            search: searchParams.get("search") || "",
+          },
         });
         const data = response.data;
         if (data && Array.isArray(data.businesses)) {
           setBusinesses(data.businesses);
           setTotalPages(data.totalPages);
         } else {
-          console.error('Expected businesses array in response, but got:', data);
+          console.error(
+            "Expected businesses array in response, but got:",
+            data
+          );
         }
       } catch (err) {
-        console.error('Error fetching businesses:', err);
+        console.error("Error fetching businesses:", err);
       } finally {
         setLoading(false);
       }
@@ -50,16 +52,18 @@ function Business() {
     fetchBusinesses();
   }, [searchParams]);
 
-  if (loading) return <BusinessSkeletonPage/>
-;
+  if (loading) return <BusinessSkeletonPage />;
 
   const handleSearch = (e: any) => {
     const search = e.target.value;
-    setSearchParams({ search, page: '1' });
+    setSearchParams({ search, page: "1" });
   };
 
   const handlePageChange = (page: number) => {
-    setSearchParams({ ...Object.fromEntries(searchParams), page: page.toString() });
+    setSearchParams({
+      ...Object.fromEntries(searchParams),
+      page: page.toString(),
+    });
   };
 
   return (
@@ -68,7 +72,7 @@ function Business() {
         <Input
           type="text"
           placeholder="Search businesses..."
-          value={searchParams.get('search') || ''}
+          value={searchParams.get("search") || ""}
           onChange={handleSearch}
           className="w-full max-w-md mx-auto"
         />
@@ -88,22 +92,33 @@ function Business() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3 }}
             >
-              <Card onClick={() => { navigate(`/business/${business._id}`) }} className=" bg-secondary-foreground overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <Card
+                onClick={() => {
+                  navigate(`/business/${business._id}`);
+                }}
+                className="relative bg-secondary-foreground overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+              >
                 <img
                   src={business.image}
                   alt={business.name}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-96 object-cover"
                 />
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-2 text-background">{business.name}</h2>
-                  <p className="text-background mb-4">{business.description}</p>
+                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 backdrop-blur-md p-6">
+                  <h2 className="text-2xl font-bold mb-2 text-white">
+                    {business.name}
+                  </h2>
+                  <p className="text-white mb-4">{business.description}</p>
                   <div className="flex justify-between items-center">
-                    <p className="text-sm text-gray-500">{business.location}</p>
+                    <p className="text-sm text-gray-100">{business.location}</p>
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`w-5 h-5 ${i < business.stars ? 'text-yellow-400' : 'text-gray-300'}`}
+                          className={`w-5 h-5 ${
+                            i < business.stars
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          }`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -122,7 +137,7 @@ function Business() {
       )}
 
       <PaginationComponent
-        currentPage={Number(searchParams.get('page') || 1)}
+        currentPage={Number(searchParams.get("page") || 1)}
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
