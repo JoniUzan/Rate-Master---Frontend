@@ -4,6 +4,8 @@ import EnterSection from "@/components/self-made/EnterSection";
 import HomeCarusele from "@/components/self-made/HomeCarusele";
 import Getstarted from "@/components/self-made/Getstarted";
 
+import About from "./About";
+
 function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary">
@@ -11,7 +13,8 @@ function Home() {
         <EnterSection />
         <HomeCarusele />
         <KeyFeatures />
-        <Getstarted />
+        
+        <About />
       </main>
     </div>
   );

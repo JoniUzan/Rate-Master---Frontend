@@ -12,6 +12,9 @@ import MainLayout from "./components/self-made/MainLayout";
 import { useAuth } from "./context/UserProvider";
 import Business from "./pages/Business";
 import BusinessDetailsPage from "./pages/BusinessDetailsPage";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:3000/");
 
 function App() {
   // home, login ,register
@@ -34,7 +37,6 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="/about" element={<About />} />
           <Route path="/PricacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactUs />} />
