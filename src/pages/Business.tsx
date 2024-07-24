@@ -40,6 +40,7 @@ function Business() {
         if (data && Array.isArray(data.businesses)) {
           setBusinesses(data.businesses);
           setTotalPages(data.totalPages);
+          setLoading(false)
         } else {
           console.error(
             "Expected businesses array in response, but got:",
@@ -48,16 +49,16 @@ function Business() {
         }
       } catch (err) {
         console.error("Error fetching businesses:", err);
-      } finally {
-        setLoading(false);
-      }
+      } 
+      // finally {
+      //   setLoading(false);
+      // }
     };
 
     fetchBusinesses();
   }, [searchParams]);
 
-  if (loading) return <BusinessSkeletonPage />;
-
+  
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value;
     setSearchParams((prev) => {
@@ -68,15 +69,17 @@ function Business() {
       };
     });
   };
-
+  
   const handlePageChange = (page: number) => {
     setSearchParams({
       ...Object.fromEntries(searchParams),
       page: page.toString(),
     });
   };
-
+  
+  if (loading) return <BusinessSkeletonPage />;
   return (
+    
     <div className="container mx-auto p-4 bg-background">
       <div className="mb-8 flex justify-center items-center gap-8">
         <Input

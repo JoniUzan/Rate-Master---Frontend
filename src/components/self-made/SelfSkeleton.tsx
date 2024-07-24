@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardContent, CardFooter } from '../ui/card';
+import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
 
 const BusinessCardSkeleton = () => (
-  <div className="bg-secondary-foreground overflow-hidden shadow-lg rounded-md">
+  <div className="bg-gray-500 overflow-hidden shadow-lg rounded-md">
     <div className="w-full h-48 bg-gray-300 animate-pulse" />
     <div className="p-6">
       <div className="h-8 bg-gray-300 rounded w-3/4 mb-2 animate-pulse" />
@@ -11,7 +11,10 @@ const BusinessCardSkeleton = () => (
         <div className="h-4 bg-gray-300 rounded w-1/4 animate-pulse" />
         <div className="flex items-center">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="w-5 h-5 bg-gray-300 rounded-full mr-1 animate-pulse" />
+            <div
+              key={i}
+              className="w-5 h-5 bg-gray-300 rounded-full mr-1 animate-pulse"
+            />
           ))}
         </div>
       </div>
@@ -20,7 +23,7 @@ const BusinessCardSkeleton = () => (
 );
 
 const BusinessSkeletonPage = () => (
-  <div className=" mt-20 ml-9 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div className=" mt-20 mx-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {[...Array(6)].map((_, index) => (
       <motion.div
         key={index}
@@ -70,4 +73,4 @@ const BusinessDetailsSkeleton = () => (
 );
 
 export { BusinessSkeletonPage };
-export {BusinessDetailsSkeleton}
+export { BusinessDetailsSkeleton };
