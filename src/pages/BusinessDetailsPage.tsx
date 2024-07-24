@@ -61,6 +61,7 @@ const BusinessDetailsPage: React.FC = () => {
   const [loadingLike, setLoadingLike] = useState<string | null>(null);
   const { businessId } = useParams<{ businessId: string }>();
   const [rating, setRating] = useState(0);
+  const [isAddReviewClicked, setIsAddReviewClicked] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -207,23 +208,29 @@ const BusinessDetailsPage: React.FC = () => {
   }
 
   async function handleAddReview(e: React.FormEvent) {
+
     e.preventDefault();
 
-    if (!loggedInUser) {
-      navigate("/auth/SignIn");
-      return;
-    }
+    if (!isAddReviewClicked) {
+      if (!loggedInUser) {
+        navigate("/auth/SignIn");
+        return;
+      }
 
-    if (!newReview.trim()) return;
+      if (!newReview.trim()) return;
 
-    try {
-      await api.post(`business/reviews/${businessId}`, { content: newReview, rating: rating });
+      setIsAddReviewClicked(true);
 
-      setRating(0);
-      setNewReview("");
-      setIsDialogOpen(false);
-    } catch (error) {
-      console.error("Failed to add review:", error);
+      try {
+        await api.post(`business/reviews/${businessId}`, { content: newReview, rating: rating });
+
+        setRating(0);
+        setNewReview("");
+        setIsAddReviewClicked(false);
+        setIsDialogOpen(false);
+      } catch (error) {
+        console.error("Failed to add review:", error);
+      }
     }
   }
 
