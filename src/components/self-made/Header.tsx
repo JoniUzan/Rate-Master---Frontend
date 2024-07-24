@@ -12,6 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Menu } from "lucide-react";
+import { Link } from "react-router-dom";
+
+import logo from "../../assets/Logo.png";
 
 function Header() {
   const { loggedInUser, logout } = useAuth();
@@ -22,7 +25,9 @@ function Header() {
   return (
     <header className="py-2 text-secondary-foreground sticky top-0 z-50 shadow-md backdrop-blur-lg">
       <nav className="flex justify-between items-center px-4 md:px-8">
-        <img className="w-24 md:w-32" src="src\assets\Logo.png" alt="Logo" />
+        <Link to={"/"}>
+          <img className="w-32 md:w-40" src={logo} alt="Logo" />
+        </Link>
 
         <div className="hidden md:flex md:gap-6">
           <Button variant="ghost" asChild>
