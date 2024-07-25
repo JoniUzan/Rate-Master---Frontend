@@ -18,7 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Star, ArrowLeft, MapPin, Heart, HeartOff } from "lucide-react";
-import { useAuth } from "../context/userProvider";
+import { useAuth } from "../context/UserProvider";
 import { BusinessDetailsSkeleton } from "@/components/self-made/SelfSkeleton";
 import GoogleMaps from "@/components/self-made/GoogleMap";
 import EditReview from "@/components/self-made/EditReview";

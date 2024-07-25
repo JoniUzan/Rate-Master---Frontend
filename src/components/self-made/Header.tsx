@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "@/context/userProvider";
+import { useAuth } from "@/context/UserProvider";
 import { Button } from "../ui/button";
 import { ModeToggle } from "./DarkMode";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";

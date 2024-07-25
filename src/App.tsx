@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound";
 import ContactUs from "./pages/Contact";
 import AuthLayout from "./components/self-made/AuthLayout";
 import MainLayout from "./components/self-made/MainLayout";
-import { useAuth } from "./context/userProvider";
+import { useAuth } from "./context/UserProvider";
 import Business from "./pages/Business";
 import BusinessDetailsPage from "./pages/BusinessDetailsPage";
 import io from "socket.io-client";

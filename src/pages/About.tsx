@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/context/userProvider";
+import { useAuth } from "@/context/UserProvider";
 
 
 function About() {
