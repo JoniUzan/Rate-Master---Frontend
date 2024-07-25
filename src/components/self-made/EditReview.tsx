@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../context/UserProvider";
+import { useAuth } from "../../context/userProvider";
 import { api } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";

@@ -12,7 +12,7 @@ import {
   CardContent,
   CardFooter,
 } from "../components/ui/card";
-import { RegisterCredentials, useAuth } from "../context/UserProvider";
+import { RegisterCredentials, useAuth } from "../context/userProvider";
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {

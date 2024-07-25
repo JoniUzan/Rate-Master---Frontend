@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
-import { useAuth } from "../../context/UserProvider";
+import { useAuth } from "../../context/userProvider";
 
 function Getstarted() {
   const navigate = useNavigate();
