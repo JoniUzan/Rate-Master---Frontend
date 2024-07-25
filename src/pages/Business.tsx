@@ -40,21 +40,25 @@ function Business() {
         if (data && Array.isArray(data.businesses)) {
           setBusinesses(data.businesses);
           setTotalPages(data.totalPages);
+          setLoading(false)
         } else {
-          console.error("Expected businesses array in response, but got:", data);
+          console.error(
+            "Expected businesses array in response, but got:",
+            data
+          );
         }
       } catch (err) {
         console.error("Error fetching businesses:", err);
-      } finally {
-        setLoading(false);
-      }
+      } 
+      // finally {
+      //   setLoading(false);
+      // }
     };
 
     fetchBusinesses();
   }, [searchParams]);
 
-  if (loading) return <BusinessSkeletonPage />;
-
+  
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value;
     setSearchParams((prev) => {
@@ -65,15 +69,17 @@ function Business() {
       };
     });
   };
-
+  
   const handlePageChange = (page: number) => {
     setSearchParams({
       ...Object.fromEntries(searchParams),
       page: page.toString(),
     });
   };
-
+  
+  if (loading) return <BusinessSkeletonPage />;
   return (
+    
     <div className="container mx-auto p-4 bg-background">
       <div className="mb-8 flex justify-center items-center gap-8">
         <Input
@@ -81,7 +87,7 @@ function Business() {
           placeholder="Search businesses..."
           value={searchParams.get("search") || ""}
           onChange={handleSearch}
-          className="w-full max-w-md"
+          className="w-full max-w-md text-foreground"
         />
         <FilterBusiness
           searchParams={searchParams}
@@ -115,7 +121,9 @@ function Business() {
                   className="w-full h-96 object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 backdrop-blur-md p-6">
-                  <h2 className="text-2xl font-bold mb-2 text-white">{business.name}</h2>
+                  <h2 className="text-2xl font-bold mb-2 text-white">
+                    {business.name}
+                  </h2>
                   <p className="text-white mb-4">{business.description}</p>
                   <div className="flex justify-between items-center">
                     <p className="text-sm text-gray-100">{business.location}</p>
@@ -127,7 +135,9 @@ function Business() {
           ))}
         </motion.div>
       ) : (
-        <div className="text-center text-accent-foreground">No businesses found.</div>
+        <div className="text-center text-accent-foreground">
+          No businesses found.
+        </div>
       )}
 
       <PaginationComponent
@@ -140,4 +150,3 @@ function Business() {
 }
 
 export default Business;
-

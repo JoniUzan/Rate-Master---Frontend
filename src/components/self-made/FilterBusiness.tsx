@@ -5,6 +5,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -98,13 +99,14 @@ function FilterBusiness({
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" className="text-foreground">
-          <Filter  />
+          <Filter />
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="text-foreground">
         <SheetHeader>
           <SheetTitle className="text-center">Filter</SheetTitle>
         </SheetHeader>
+        <SheetDescription></SheetDescription>
         <div className="grid gap-4 py-4">
           <div className="flex flex-col gap-8 justify-center items-center text-accent-foreground">
             <Select
@@ -112,7 +114,6 @@ function FilterBusiness({
               onValueChange={(value) => {
                 setCategory(value);
                 handleFilter("category", value);
-                
               }}
             >
               <SelectTrigger className="w-[280px]">
