@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 //Logged in user type
 export interface User {
+  _id: string;
   username: string;
   email: string;
   firstName: string;
@@ -28,6 +29,8 @@ export interface RegisterCredentials {
 
 export interface AuthContextType {
   loggedInUser: User | null | undefined;
+  userLikes: string[] | null | undefined;
+  setUserLikes: React.Dispatch<React.SetStateAction<string[]>>
   login: (userData: LoginCredentials) => Promise<void>;
   register: (userData: RegisterCredentials) => Promise<void>;
   logout: () => void;
@@ -38,7 +41,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>(
     undefined
   );
-  // const [token, setToken] = useLocalStorage("token");
+  const [userLikes, setUserLikes] = useState<string[]>([])
+
+
   const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
@@ -54,7 +59,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const response = await api.get("/auth/loggedInUser");
         setLoggedInUser(response.data.user);
-        console.log(response.data.user);
+        setUserLikes(response.data.likedReviews);
+        console.log("likes :", response.data.likedReviews);
+        console.log("user :", response.data.user);
       } catch (error: any) {
         if (error.response?.status === 401) {
           console.error("Invalid token, logging out");
@@ -113,7 +120,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ loggedInUser, login, register, logout }}>
+    <AuthContext.Provider value={{ loggedInUser, userLikes, login, register, logout, setUserLikes }}>
       {children}
     </AuthContext.Provider>
   );
