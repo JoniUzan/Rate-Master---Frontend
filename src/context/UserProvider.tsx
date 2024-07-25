@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 //Logged in user type
 export interface User {
+  _id: string;
   username: string;
   email: string;
   firstName: string;
